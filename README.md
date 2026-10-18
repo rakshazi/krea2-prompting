@@ -97,7 +97,13 @@ The skill gives you a positive prompt and settings. Your ComfyUI still has to re
 
 ## Credits, because none of this is mine
 
-Krea 2 by [Krea AI](https://www.krea.ai/). ComfyUI by the ComfyUI project. The pose system is [@Zuanfilm](https://x.com/Zuanfilm)'s. The style index came from public Krea 2 workflow notes. I just ran the tests and wrote down what happened.
+Krea 2 by [Krea AI](https://www.krea.ai/).
+ComfyUI by the [ComfyUI project](https://comfy.org).
+The basis for the skill is [buxinzi2233/krea2-prompting](https://github.com/buxinzi2233/krea2-prompting) (MIT).
+The pose system is [@Zuanfilm](https://x.com/Zuanfilm)'s.
+The style index came from public Krea 2 workflow notes.
+
+I just ran the tests and wrote down what happened.
 
 ## License
 
