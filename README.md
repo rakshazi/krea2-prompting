@@ -26,6 +26,10 @@ Yes, an AI wrote most of this. No, that doesn't make it another confident pile o
 
 Same checkpoint, same seed, one variable per prompt. If a clause changed the image, it stayed. If the model ignored it, it went into the failure table with the exact wording that failed. That's the whole method. (Yes, it is slower than asking a chatbot. That's the point.) No vibes, no "I asked another model and it agreed with me".
 
+## Examples
+
+Ten topics, two passes by DeepSeek v4.1 Flash: one with only this README and the list of files as context, one with the entire skill loaded. [The examples gallery](./examples/README.md) has both renders side by side and both prompts for every topic. It is the fastest way to see what the skill actually changes.
+
 ## What's inside
 
 Everything except `SKILL.md` lives in `references/`.
