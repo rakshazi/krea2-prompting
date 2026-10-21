@@ -1,5 +1,7 @@
 # krea2-prompting
 
+> absolute unnecessary story about how the skill was created and why: [rakshazi.me/blog/krea2-prompting-skill/](https://rakshazi.me/blog/krea2-prompting-skill/), just in case you want to waste some time.
+
 I can run Krea 2 Turbo on my local hardware now, so I did the obvious thing: spent a stupid amount of time generating images and writing down what actually happened.
 
 I ran it locally because paying a cloud provider by the hour to find out whether one adjective changes the anatomy is a bad business model.
