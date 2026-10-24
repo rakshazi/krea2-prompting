@@ -1,7 +1,23 @@
 ---
 name: krea2-prompting
-description: "Write natural-language prompts for Krea 2 Turbo in ComfyUI: photoreal photography, poses, styles, giant-scale scenes, and adult/NSFW work."
-license: CC-BY-SA-4.0
+description: >-
+  Write, revise, and debug natural-language prompts for Krea 2 and Krea 2 Turbo image generation in ComfyUI, with the
+  sampler settings that go with them: photoreal photography, portraits, products, architecture, style and pose blocks,
+  giant-scale scenes, and adult/NSFW work. Use this skill when the user asks for an image prompt (Krea 2 is the
+  assumed model when none is named), wants a scene, brief, or reference photo turned into prompt text, asks about
+  Krea 2 settings (steps, CFG, shift, resolution, sampler), or mentions Krea, Krea 2 Turbo, Qwen3-VL prompting,
+  ComfyUI image prompts, pose blocks, style names, or NSFW/18+ image generation, even when the request only describes
+  the picture they want. Returns prompt text and settings only; it does not run renders, install models, or touch a
+  ComfyUI server.
+license: CC-BY-SA-4.0. Full text in LICENSE.
+compatibility: >-
+  Text-only: no scripts, network, GPU, or ComfyUI endpoint required. The agent needs file-read access to load
+  references/ on demand. Hosted clients with content filters may block references/adult.md, which is 18+.
+metadata:
+  version: "1.0.0"
+  author: rakshazi
+  source: https://github.com/rakshazi/krea2-prompting
+  tested-on: Krea 2 Turbo, qwen3vl_4b encoder, qwen_image_vae, 8 steps, CFG 1.0
 ---
 
 # Krea 2 Turbo Prompting
@@ -52,7 +68,16 @@ A reliable sentence frame:
 
 Make spatial relationships grammatical and explicit (left/right thirds, foreground/midground/background, contact with surfaces, what extends beyond the frame) rather than listing disconnected nouns. Name a concrete medium (`editorial fashion photography`, `documentary photograph`, `architectural photography`) instead of `beautiful` or `nice`.
 
-## Core rules
+## Workflow
+
+1. **Classify the brief.** Route it (photoreal, style, pose, adult, giant-scale) and pull out the hard constraints: text to render, aspect, register, number of people, what must stay fixed. Ask only when a missing detail changes the picture; otherwise state the assumption and proceed.
+2. **Load one reference by route**, using the map below. Add a second only when the brief genuinely spans two routes.
+3. **Lock composition before writing.** One shot size, one angle, one crop, one aspect ratio, chosen before any wardrobe or decoration.
+4. **Draft in the sentence frame above.** Subject first, then action, then camera, environment, light, materials, mood, carried by full sentences.
+5. **Run the core rules as a pre-flight check**, scanning the draft for negations (`no people` becomes `an empty street`) and for stacked quality adjectives. Fix what fails, then emit.
+6. **Emit in the output shape at the end.** Positive prompt, then settings, plus a negative prompt only when one recurring artifact needs suppressing.
+
+## Core rules (pre-flight check)
 
 - **Text in quotes.** Put the exact words to render in double quotes, keep it short (under ~5 words): `a neon sign reading "OPEN LATE"`. Longer strings degrade.
 - **Negatives are near-inert at CFG 1.0; state preferences positively.** Avoid leaning on a negative-prompt field or a generic ban list. Instead of `no plastic skin`, write the positive target: `natural skin texture, visible pores`. A short negative prompt only earns its place to suppress one specific recurring artifact. (Negative-prompt families for the RAW/CFG-3.5 path live in `references/krea2-core.md`.)
@@ -73,6 +98,7 @@ Read the reference that matches the task. Each loads only when reached, so pull 
 - **`references/styles.md`** to lock a specific aesthetic: a 289-entry style index, four full example paragraphs, and the two authoring formulas.
 - **`references/adult.md`** for adult / NSFW photography (18+): register control, explicit anatomy/arousal/act vocabulary, position geometry, multi-person rules, a tested failure table, and translating crude briefs into Krea 2 prose.
 - Giant-scale creative routes, photoreal cinematic by default: **`references/megastructure.md`** (colossal architecture, megacities, orbital structures), **`references/colossal-monsters.md`** (kaiju, giant beasts), **`references/cosmic-horror.md`** (eldritch entities, dread), **`references/pure-organic-monsters.md`** (strictly biological giant creatures). These share scale logic: concrete exaggerated dimensions, human-scale surface units, a tiny distant scale reference, and 10 to 40 percent environmental negative space.
+- **`examples/`** for worked pairs, each topic written twice (generic prompt versus skill prompt) with both renders. Read `examples/README.md` for the index and open one topic page when the user wants to see what the skill changes or asks for a style anchor.
 
 ## Output shape
 

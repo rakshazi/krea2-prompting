@@ -1,0 +1,80 @@
+{
+  "skill_name": "krea2-prompting",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "I need a hero image for my SaaS landing page: a rain-slicked neon alley at night, 16:9. Give me the Krea 2 prompt and the ComfyUI settings.",
+      "expected_output": "One or two paragraphs of natural-language prompt that open on the scene, then a settings block with a 16:9 resolution, 8 steps, CFG 1.0, shift 1.15.",
+      "assertions": [
+        "The response includes both a positive prompt and a settings block",
+        "The settings list 8 steps, CFG 1.0, and shift 1.15",
+        "The resolution is a 16:9 pair with both sides divisible by 16",
+        "The prompt opens on the subject or scene, ahead of lighting and materials",
+        "The prompt reads as sentences, with no comma-separated quality stack such as '8k, masterpiece, best quality'",
+        "Restrictions are stated positively, with no 'no people' or 'without X' phrasing inside the prompt"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Poster for a synthwave night, one big word: NEON, vertical phone format.",
+      "expected_output": "A 9:16 poster prompt that puts \"NEON\" in double quotes and describes placement, scale, and font character, plus settings.",
+      "assertions": [
+        "The word NEON appears in double quotes inside the prompt",
+        "The settings state a 9:16 resolution with both sides divisible by 16",
+        "Placement, scale, and font character of the text are described",
+        "The response ships no generic negative ban list"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Give me a pose block for a woman carrying a goat over one shoulder, then the photoreal prompt around it.",
+      "expected_output": "An 11-field pose block (leg_position through silhouette) applied to the goat carry, followed by a photoreal prompt and settings.",
+      "assertions": [
+        "The pose block carries at least 9 of these fields: leg_position, arm_position, hand_position, torso_orientation, head_orientation, weight_distribution, center_of_gravity, muscle_tension, movement_quality, balance, silhouette",
+        "The goat replaces the carried object in hand_position and silhouette",
+        "A photoreal prompt and a settings block follow the pose block"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "Write a boudoir shot, morning light through curtains, silk slip, intimate and soft.",
+      "expected_output": "A boudoir-register prompt with concrete camera, light, and skin language, plus settings, staying in the register the user asked for.",
+      "assertions": [
+        "The prompt stays in the boudoir register the user asked for",
+        "Light direction and quality are named concretely",
+        "Skin and fabric are described as materials, with no 'ultra realistic, 8k' stack",
+        "The settings block matches the photoreal defaults"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "Kaiju pushing through a flooded city at dusk, cinematic, 21:9. Make it feel huge.",
+      "expected_output": "A colossal-monster route prompt with a concrete exaggerated dimension, human-scale comparison units, a tiny distant scale reference or open negative space, and 21:9 settings.",
+      "assertions": [
+        "The creature or the architecture gets a concrete exaggerated dimension",
+        "Human-scale comparison units appear (cars, windows, people, floors)",
+        "The frame carries a small distant scale reference or explicit negative space",
+        "The resolution is a 21:9 pair with both sides divisible by 16"
+      ]
+    },
+    {
+      "id": 6,
+      "prompt": "Turn this reference photo into a Krea 2 prompt and keep the composition exactly: [image: a fisherman mending nets on a harbour quay at dawn]",
+      "expected_output": "A reverse-engineered prompt covering only visible facts (subject, count, composition, camera feel, light, palette, materials, mood, aspect), then settings.",
+      "assertions": [
+        "The prompt reproduces the visible facts and invents no extra objects or people",
+        "Composition, light direction, and palette are described explicitly",
+        "The settings block states resolution, aspect ratio, 8 steps, CFG 1.0, and shift 1.15"
+      ]
+    },
+    {
+      "id": 7,
+      "prompt": "Here is the prompt you gave me. Run it in ComfyUI and send me the PNG.",
+      "expected_output": "The response supplies prompt text and settings for the user to run, and reports no render it did not perform.",
+      "assertions": [
+        "The response states that it produces prompt text and settings, without claiming a render happened",
+        "The response hands over the prompt and settings, or names the tool that renders"
+      ]
+    }
+  ]
+}

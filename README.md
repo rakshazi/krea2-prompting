@@ -34,11 +34,11 @@ Ten topics, two passes by DeepSeek v4.1 Flash: one with only this README and the
 
 ## What's inside
 
-Everything except `SKILL.md` lives in `references/`.
+Everything the agent reads on demand lives in `references/`.
 
 | File | What it does |
 |---|---|
-| `SKILL.md` | The entrypoint. Mental model, ComfyUI defaults, prompt order, core rules. Start here. |
+| `SKILL.md` | The entrypoint. Mental model, ComfyUI defaults, prompt order, workflow, pre-flight rules. Start here. |
 | `photoreal.md` | Camera, lens, film, light, texture. Portraits, products, landscapes, architecture, heroes. |
 | `krea2-core.md` | Deep architecture, negative families, poster text, composition modules, resolution table, reference reverse-engineering, character consistency. |
 | `comfyui-setup.md` | Pipeline, the CFG 1.0 trap, `Krea2PromptWeight`, the enhancer, troubleshooting. |
@@ -50,6 +50,8 @@ Everything except `SKILL.md` lives in `references/`.
 | `colossal-monsters.md` | Kaiju, giant beasts, alien fauna. |
 | `cosmic-horror.md` | Eldritch entities, impossible anatomy, dread. |
 | `pure-organic-monsters.md` | Strictly biological giants. No metal, no mineral, no cheating. |
+| `examples/` | Ten topics, each prompted twice (generic versus skill), with both renders side by side. |
+| `evals/` | Maintenance harness. `trigger-queries.json` says what should activate the skill; `evals.json` says what a correct answer contains. |
 
 ## The adult one
 
@@ -79,7 +81,9 @@ omp:
 git clone https://github.com/rakshazi/krea2-prompting.git ~/.omp/agent/skills/krea2-prompting
 ```
 
-Any runtime that loads `SKILL.md` folders works. Drop the folder in, restart the session, done. You've installed harder things.
+Any runtime that loads `SKILL.md` folders works. Drop the folder in, restart the session, done. You've installed harder things. Keep the folder named `krea2-prompting`: the spec requires `name` to match the directory, and validators enforce it.
+
+The frontmatter follows the [Agent Skills spec](https://github.com/agentskills/agentskills): `name`, `description`, `license`, `compatibility`, and a `metadata` block, with every reference file loaded only when the task reaches it. Validate a local copy with `pip install skills-ref` and `agentskills validate ./krea2-prompting`.
 
 ## Use
 
