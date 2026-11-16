@@ -21,5 +21,6 @@
   { "query": "how much does krea ai cost per month?", "should_trigger": false },
   { "query": "write alt text for this product photo, screen reader friendly", "should_trigger": false },
   { "query": "write me an sdxl prompt for a realistic portrait", "should_trigger": false },
-  { "query": "how do I install comfyui on arch linux", "should_trigger": false }
+  { "query": "how do I install comfyui on arch linux", "should_trigger": false },
+  { "query": "prompt for a meme image: our mascot presenting a severed zombie hand, with a speech bubble line over her head", "should_trigger": true }
 ]

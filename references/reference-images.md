@@ -67,6 +67,10 @@ Rules that make it hold:
   what the prompt says about her figure, and a grinning reference drags the grin into every scene. Silhouette
   follows the garment cut as well: a hugging mini reads as wider hips than a pencil skirt on the same body.
   Fix the reference itself; adjectives cannot override it.
+- **A figure the sheet does not carry will not appear.** Two sheet-conditioned renders stayed slim against a prompt
+  that asked for `a generous bust, a deep cleavage line, wide hips and thick soft thighs`. When a one-off needs a
+  fuller or heavier figure than the sheet carries, render that image text-only from the identity block and leave the
+  sheet out. When identity has to survive the set, rebuild the sheet at the target figure first.
 - **Trim and small accessories are identity too, and they misbehave.** A jacket lining from the sheet got painted onto
   the blouse underneath it, and the sheet's hairpins turned up as a floating glyph beside another character's head.
   Say where an accent sits ("the hot-orange lining stays inside the open blazer") and check the accessory count and

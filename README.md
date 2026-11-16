@@ -40,10 +40,10 @@ Everything the agent reads on demand lives in `references/`.
 |---|---|
 | `SKILL.md` | The entrypoint. Mental model, ComfyUI defaults, prompt order, workflow, pre-flight rules. Start here. |
 | `photoreal.md` | Camera, lens, film, light, texture. Portraits, products, landscapes, architecture, heroes. |
-| `krea2-core.md` | Deep architecture, negative families, poster text, composition modules, resolution table, reference reverse-engineering, character consistency. |
+| `krea2-core.md` | Deep architecture, negative families, poster text, speech bubbles, staged props, composition modules, resolution table, reference reverse-engineering, character consistency. |
 | `reference-images.md` | Character and style references: two core-node wirings, `Picture N` prompts, the 0.25 layout split and its limits, reference-sheet rules, failure table. |
 | `comfyui-setup.md` | Pipeline, the CFG 1.0 trap, `Krea2PromptWeight`, the enhancer, troubleshooting. |
-| `poses.md` | The 11-field pose schema, usage, taxonomy, and the field findings. |
+| `poses.md` | The 11-field pose schema, usage, taxonomy, the field findings, and hands and held objects. |
 | `pose-library.md` | 30 ready-to-paste pose blocks. Copy, paste, stop inventing poses from scratch. |
 | `styles.md` | 289 style names, four full examples, two authoring formulas. |
 | `adult.md` | 18+. The explicit one. You know why you're here. |

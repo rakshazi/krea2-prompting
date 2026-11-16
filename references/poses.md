@@ -91,3 +91,12 @@ Fill all 11 fields. Write each as a full declarative sentence. Two conventions f
 - **Pose verbs lose to equipment nouns.** `mid-squat` with no station named landed her on the wrong machine; name the station (`in a squat rack`) plus the movement phase.
 - **Garment processes do not render.** `pulling up`, `rolled midway`, `bunched at the calf` all collapsed to the worn state across nine arms; renderable states are fully on, fully off, in hand.
 - **Over-shoulder glances are the strongest single pose instruction.** They held identity, face, and camera relationship across a dozen scenes and registers.
+
+## Hands and held objects
+
+`hand_position` is the field that fails most often in staged scenes. A fist wrapping a detached prop came back, across seeds, with the thumb as a separate pill, an extra knuckle, and the prop floating just above the fingers. Open palms, hands on hips and spread fingers rendered clean on every attempt.
+
+- Ranked fixes: present the prop on an open palm; give the fist a cuff, handle or stick to wrap; let the prop hover a short gap above the palm for undead or magical props; render the prop alone and composite it onto a clean hand.
+- Name the contact and the shape: `her fist closes around the torn cuff, the thumb wrapped across the front of the fingers`. A bare `holding it` gives the model nothing to grip.
+- Count digits on both sides. Five fingers per hand for the character, five on the prop.
+- When the prop is detached, say why it reads detached: `no arm above the cuff`, `a clear gap of cream paper between the cuff and her sleeve`.

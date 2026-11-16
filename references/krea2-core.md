@@ -71,6 +71,12 @@ A small label in the lower right reads "GEOMETRY".
 
 Short single words and brief titles render far more reliably than sentences. Specify placement, scale, font character, occlusion, and how the text integrates into the layout. Avoid vague `cool text`, many captions, or paragraph-length strings. For text-focused work on a live-negative path, the typography negatives are `misspelled text, random letters, unreadable typography, extra words, paragraph text, watermark, logo`.
 
+**Speech bubbles.** A bubble is a text surface with the same limits: a few words letter cleanly, a full sentence does not. For a longer line, generate an empty bubble and set the text afterwards.
+
+- Ask for the bubble in the composition: `one large blank cream speech bubble with a crisp charcoal outline hangs in the top quarter of the frame, its interior entirely empty with no lettering`. Drop that clause and the model fills the top of the frame with the character's head, leaving nowhere for a bubble.
+- Fit the line to the bubble as drawn. Set the type at four to five percent of the image's long edge, two short lines for a wide bubble, with generous margins and a centred block.
+- The tail is the fragile part. One seed draws a clean wedge, the next draws two isolated strokes with a gap, and a bubble crossing a hair or an ear can lose its edge. When the tail has to look right, redraw the bubble: a rounded rectangle plus a tail polygon between two base points, strokes on the two long sides only, and a fill a shade lighter than the paper so the tail reads as a solid shape.
+
 ## 6. Negative-prompt families
 
 Krea 2 Turbo runs at CFG 1.0, where the negative branch is effectively inert, so **state preferences in the positive prompt** for turbo work. The families below matter on the RAW path (CFG 3.5) or any pipeline with a live negative branch. Build only the families relevant to the image:
@@ -133,3 +139,13 @@ For a recurring character, build a reusable identity block: two or three sentenc
 - Wardrobe continuity: name garment colors in every prompt; describe worn states (fully on, fully off, in hand) as fixed states; long garments crossing a folded joint are fragile.
 
 Keep the block factual and visual. A name, a personality trait, or a backstory clause gives the model nothing to render.
+
+## 11. Staged props and deliberate artifacts
+
+A prop that shares material with the character reads as anatomy. A detached hand in her own skin tone came back as her own hand or as an amputation, and the same hand in grey-green zombie skin with stitches and a torn cuff read as a prop on the first render.
+
+- Give the prop a cue the character cannot share: wood, stone, grey-green zombie skin, stitches, a torn cuff, a handle.
+- State the separation as something visible: `no arm above the cuff`, `a clear strip of cream paper between the cuff and her sleeve`.
+- Keep the character's own anatomy counted and explicit: `her shoulders carry exactly one arm each`, `five fingers on the prop hand`.
+- Keep the palette: one cool prop in a warm cream frame pulls the eye straight to the joke.
+- The hand-on-prop pose is the weak point. Rank the fixes: an open palm presenting the prop, a cuff or handle for the fist to wrap, a short hover above the palm for undead or magical props, then a cut-and-move in post on the flat paper.

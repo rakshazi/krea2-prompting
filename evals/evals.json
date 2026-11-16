@@ -89,6 +89,19 @@
         "Settings stay at 8 steps, CFG 1.0, shift 1.15",
         "The answer suggests generating the face sheet first and deriving the full-body sheet from it, so identity, pins and expression match"
       ]
+    },
+    {
+      "id": 9,
+      "prompt": "Krea 2 prompt for a meme: our catgirl in cream paper, presenting a detached zombie hand on her open palm, with a speech bubble above her that says 'Well, even backend developers can do better'. Portrait 4:5.",
+      "expected_output": "A portrait prompt that stages the prop with a material cue (grey-green zombie skin, stitches, torn cuff), states the visible separation (a gap of cream paper, no arm above the cuff), keeps her own arms counted, reserves the top of the frame with an empty speech bubble, and says the nine-word line is typeset after the render because Krea 2 mangles a sentence. Settings: 1536x2048, 8 steps, CFG 1.0, shift 1.15.",
+      "assertions": [
+        "The prompt gives the detached hand a material cue that separates it from the character's skin",
+        "The prompt states a visible gap or a no-arm clause that keeps the prop detached",
+        "The prompt keeps the character's own anatomy counted, one arm per shoulder",
+        "The prompt reserves the top of the frame with an empty speech bubble",
+        "The answer says the nine-word line is typeset after the render",
+        "The settings block carries a 4:5 resolution divisible by 16, 8 steps, CFG 1.0, and shift 1.15"
+      ]
     }
   ]
 }
