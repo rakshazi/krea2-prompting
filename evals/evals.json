@@ -75,6 +75,20 @@
         "The response states that it produces prompt text and settings, without claiming a render happened",
         "The response hands over the prompt and settings, or names the tool that renders"
       ]
+    },
+    {
+      "id": 8,
+      "prompt": "I need the same anime character across a dozen Krea 2 images in ComfyUI. What do I wire, and what should the prompt look like?",
+      "expected_output": "The vision-token route: CLIPLoader with type krea2 into TextEncodeQwenImageEditPlus with image1..3 and no vae input, plus a prompt that leads with 'Keep the same ... from Picture 1'. One reference per character. For two or more references, a text-only conditioning for the first ~0.25 of steps combined with the image-conditioned branch. The latent route with krea2_style_reference and qwen_image_vae for style transfer. Settings stay at 8 steps, CFG 1.0, shift 1.15.",
+      "assertions": [
+        "The answer wires TextEncodeQwenImageEditPlus with image inputs and leaves its vae input unconnected for the character route",
+        "The prompt example opens with 'Keep the same ... from Picture 1' and names every connected reference",
+        "The answer states one reference per character, since two references of one character render her twice",
+        "For two or more references, the answer describes a text-only conditioning for the first ~0.25 of steps combined with the image-conditioned branch",
+        "The style route is named with krea2_style_reference plus qwen_image_vae reference latents",
+        "Settings stay at 8 steps, CFG 1.0, shift 1.15",
+        "The answer suggests generating the face sheet first and deriving the full-body sheet from it, so identity, pins and expression match"
+      ]
     }
   ]
 }

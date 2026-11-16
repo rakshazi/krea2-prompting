@@ -27,6 +27,10 @@ The official command-line inference uses `--cfg 0.0`. A standard ComfyUI KSample
 
 If colours or fine texture look subtly wrong versus a reference, the VAE is the cheapest variable to check first. Some community workflows swap in a Wan-family 16-channel VAE; it runs, but the official pairing is the Qwen-Image VAE. Swap back to `qwen_image_vae` before chasing any other cause.
 
+## Reference images
+
+Krea 2 reads reference images as Qwen3-VL vision tokens, so a picture can carry identity, outfit and proportions into the prompt. Two core-node wirings cover it: vision tokens alone for a recurring character, plus VAE latents and `krea2_style_reference` for style transfer. `references/reference-images.md` has the node tables, the `Picture N` prompt shape, the 0.25 layout split that stops duplicated figures, the reference-sheet rules and the failure table.
+
 ## Prompt weighting (optional node)
 
 Weighting is a **node feature**, absent from the base model. It comes from `Krea2PromptWeight` (ComfyUI-KJNodes), which does per-token attention-value scaling through the Qwen3-VL encoder. On the stock `CLIPTextEncode`, the `(word:1.3)` syntax shoves the entire sentence conditioning and the image falls apart past about 1.2, so install the node before relying on any of this.

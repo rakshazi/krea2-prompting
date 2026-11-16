@@ -10,6 +10,7 @@
   { "query": "which styles in your index fit a cold nordic crime drama poster?", "should_trigger": true },
   { "query": "krea 2 turbo prompt pls, girl in a diner at 2am, film look", "should_trigger": true },
   { "query": "our fall campaign needs 30 image prompts, same character and light across all of them", "should_trigger": true },
+  { "query": "how do I wire krea 2 reference images in comfyui so the character stays the same across posts?", "should_trigger": true },
   { "query": "what does mu 1.15 even mean in my krea workflow", "should_trigger": true },
   { "query": "make this into a prompt: giant machine above the clouds, 4:3", "should_trigger": true },
   { "query": "what's the prompt to get that quiet luxury editorial look in midjourney?", "should_trigger": false },
