@@ -56,6 +56,22 @@ Weighting is a **node feature**, absent from the base model. It comes from `Krea
 
 `Krea2T-Enhancer` (capitan01R) patches the text-fusion stage at runtime to raise prompt adherence. It is third-party and experimental, absent from the official pipeline, and it changes how hard all weighting bites. Bypass it to get a clean baseline before tuning anything else.
 
+## LoRA strength behaviour
+
+Slider-style LoRAs (the kind exported by slider training tools) behave differently from concept LoRAs, and that trips up the first test. Five things learned the hard way, at one fixed seed each:
+
+**A slider's declared range describes its training scale, and the working band is narrower.** Metadata usually carries `slider_public_min`, `slider_public_max` and a scale factor, commonly ±5 with 0.6. Nudged to ±1 or ±1.5 the render comes back unchanged, which reads as a dead file. Push to ±3 or ±5 first to confirm the slider responds and which direction it moves, then settle back into the band that looks right. One measured pair: invisible at ±1.5, unmistakable at ±5. A rain-scene A/B then put the usable middle at +2.5, well short of the flood at +5.
+
+**Test a LoRA in the scene it was trained for.** A wetness slider trained on rain and sweat does nothing in a dry bedroom, and floods the whole frame once pushed hard. The filename is a hint about the training set; the A/B is what tells you what the weights do.
+
+**Colour bias scales with strength.** A concept LoRA near the top of its band drags its own palette in with it: anatomy that comes back flushed pink at 0.9 can match the surrounding skin at 0.7. Treat strength as a colour lever as well as a shape lever, and judge colour apart from form.
+
+**Extremes move more than the target.** At the top of a slider range the framing, the crop and the pose can drift along with the attribute: one measured -5 run pulled the camera back and closed the legs halfway, on a seed where the ±5 pair for a different slider held the composition still. Score framing and the target attribute as two separate questions.
+
+**Stacking two LoRAs pointed at the same trait adds little.** A concept LoRA at 0.9 beat the same LoRA at 0.6 plus a slider at -3. Two sources of the same instruction compete, and the sum reads flatter than either one at full strength.
+
+Same seed is the instrument for all of this. With the seed fixed, composition holds still and only the changed variable moves, so a one-field change is readable. Queue the whole matrix up front, look at all of it together, then decide.
+
 ## Troubleshooting
 
 | Symptom | Likely cause | Fix |
@@ -64,6 +80,8 @@ Weighting is a **node feature**, absent from the base model. It comes from `Krea
 | Oversaturated, distorted | CFG above ~1.5 | lower to `1.0` |
 | Weights do nothing | patched `MODEL` output not wired to the sampler | wire both node outputs |
 | Weights do nothing (part 2) | global `strength` too low | raise toward `1.0` |
+| A LoRA shows no visible effect | strength sits in a slider's dead zone | confirm at ±3 to ±5, then settle into the usable band |
+| Colour drifts warm as a LoRA is pushed | palette bias scales with strength | drop the strength, and add light and tone anchors (see `photoreal.md`) |
 | Artifacts, blown contrast | a weight above `3.0` | cap emphasis at `3.0`; work in `1.5` to `2.5` |
 | Prompt parse error | stray or nested paren, missing colon | one level, colon required: `(word:1.5)` |
 | `no X` in the prompt does nothing | no working negative branch at CFG 1.0 | use `(X:-2)` with the weighting node, or describe the positive target |

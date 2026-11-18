@@ -15,7 +15,7 @@ compatibility: >-
   Text-only: no scripts, network, GPU, or ComfyUI endpoint required. The agent needs file-read access to load
   references/ on demand. Hosted clients with content filters may block references/adult.md, which is 18+.
 metadata:
-  version: "1.2.0"
+  version: "1.3.0"
   author: rakshazi
   source: https://github.com/rakshazi/krea2-prompting
   tested-on: Krea 2 Turbo, qwen3vl_4b encoder, qwen_image_vae, 8 steps, CFG 1.0, reference images on ComfyUI 0.45.4
@@ -86,6 +86,8 @@ Make spatial relationships grammatical and explicit (left/right thirds, foregrou
 - **Do not negate in prose either.** `no hat`, `without a beard` will not reliably fire. Describe what IS present.
 - **Weighting `(word:1.3)` is not a stock feature.** On the standard `CLIPTextEncode` over Qwen3-VL, scaling one token shoves the whole conditioning and the image falls apart past ~1.2. It works only with the `Krea2PromptWeight` node (ComfyUI-KJNodes) installed. Without that node, restate for emphasis in words (`oxblood` beats `(red:1.4)`). Full weighting system in `references/comfyui-setup.md`.
 - **Revise one variable at a time.** When a generation is close, change a single field per iteration and hold the rest. Changing several fields at once makes the image drift and hides which change did what.
+- **Light sets skin colour.** `harsh direct flash` adds a warm red cast that fights any pale, even or "matching" skin request. For tone work use `soft overcast daylight, neutral white balance` and tie the tone to a body part (`the same pale skin tone as his arm`). The levers are in `references/photoreal.md`.
+- **A LoRA that changes nothing may be under-driven.** Slider-style LoRAs commonly run to ±5 and read as dead at ±1.5. A/B at one fixed seed up to ±3 or ±5 before writing the file off, and remember that a high strength drags the LoRA's own colour cast in with it. Rule set in `references/comfyui-setup.md`.
 - **Lock composition before decoration.** Decide one shot size, one camera angle, one crop, and the aspect ratio first. Wardrobe and extra detail must not silently change the framing.
 - **Speech bubbles: generate the empty bubble, typeset the line.** Krea 2 letters a few words on a flat surface and mangles a full sentence. For a longer line, put one blank cream speech bubble in the composition (`its interior entirely empty with no lettering`), then set the text in post with a clean font fitted to the bubble's interior. Ask for the bubble up front: drop the clause and the model fills the top of the frame with the character's head, leaving nowhere to put one.
 - **Hands holding things are the weak joint.** A closed fist around an object comes back with the thumb as a detached pill, an extra knuckle, and the object floating beside the grip. An open palm presenting the object, or a cuff, handle or stick for the fist to wrap, renders clean. Name the contact in the prompt.

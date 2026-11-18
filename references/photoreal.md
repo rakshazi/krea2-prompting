@@ -20,9 +20,25 @@ Light and material language beat quality adjectives. `photorealistic` alone is w
 
 **Real-camera grounding (strong on candid/portrait):** `candid, in the moment`, `authentic skin texture`, `natural facial features`, `taken on a phone camera` for a casual snapshot register.
 
+**Diegetic fantasy (cosplay framing).** Fantasy anatomy in a photoreal frame needs a costume frame or it reads as illustration: `realistic furry cosplay cat ears with pink inner fur` and `a fluffy white cosplayed cat tail` rendered as plausible cosplay in an office and a server room, while bare `cat ears` would float. Frame the impossible as wardrobe.
+
 **Candid amateur register (tested on Krea 2 NSFW finetunes).** `amateur photo` as the opening medium clause plus `harsh direct flash`, `natural skin texture with visible pores`, and `film grain` is the workhorse register: it holds identity, produces warm candid color, and cooperates with explicit content. The register clause goes FIRST: a register buried at the prompt's end is ignored and the polished editorial look returns. Skin realism cue that survives every scene: `film grain` plus one named imperfection family (pores, sweat sheen, flush); stacked realism adjectives still do nothing.
 
 State imperfection positively. Write `natural skin texture with visible pores`; avoid `no plastic skin` (negation is weak here, and the encoder may reinforce the noun you tried to ban).
+
+## Skin tone and light temperature
+
+Light decides what colour skin comes back. `harsh direct flash` is the strongest amateur-realism cue, and it also pushes warm red into skin and into warm-toned anatomy. On one fixed seed with identical wording, the same subject came back flushed and pink under flash, and matched her thigh tone under `soft overcast daylight, neutral white balance`. When a brief asks for pale, even, or "same tone everywhere" skin, swap the light before rewriting the colour words.
+
+Three levers, in the order they pay off:
+
+1. **Light quality and white balance.** `soft overcast daylight, neutral white balance`, or `cool diffused daylight from a north window`. Flash earns its place on grit, sweat and candid imperfection; use it when the brief wants that, and switch when the brief wants a tone match.
+2. **Anchor the tone to a named body part.** `pale skin` drifts. `the same pale skin tone as her thighs` holds, because the model has a reference surface in frame to copy from. Use this for lips, nipples, genitals, scars and tattoos that keep coming back a different shade than the surrounding body.
+3. **Name the complexion concretely.** `very pale porcelain skin`, `snowy white unblemished skin`, `cool neutral colouring`, `same pale tone everywhere` all outperform the bare adjective. A stated reference type beats an intensity adverb: `a pale asian cosplayer` hands the model a look to aim at, where `very pale` hands it a degree.
+
+Negated colour does nothing at CFG 1.0, so `no pink flush` and `no redness` are wasted words. Say `uniform matte colouring` and name the body part's tone directly.
+
+If the tone still lands wrong, lower the strength of any LoRA carrying that body part. Colour bias scales with strength, so 0.7 often reads paler than 0.9 while holding the shape.
 
 ## Genre recipes
 
@@ -101,6 +117,9 @@ Workflow for heroes: draft on Turbo to nail composition fast, iterate one field 
 | Flat, un-photographed look | no light language | name the source, direction, and quality of the light |
 | Plastic or dead skin | asked for realism with adjectives | name pore texture, vellus hair, catchlights; name the film stock |
 | Materials look fake | surfaces unnamed | state each material (`wet stone`, `brushed steel`, `linen weave`) |
+| Skin reads flushed or pink | harsh flash with a warm white balance | `soft overcast daylight, neutral white balance`, and anchor the tone to a body part |
+| One body part sits a shade off the rest of the skin | tone stated on that part alone | tie it to a reference part: `the same pale tone as his arms` |
+| Pale brief still comes back warm | a LoRA carrying that part is over-strength | drop its strength to about 0.7, then re-judge shape |
 | Wrong crop | ratio chosen after styling | set the aspect ratio in the initial prompt |
 | No room for the headline | no reserved negative space | add an explicit quiet zone for overlaid text |
 | Register ignored, polished look persists | medium clause placed at the prompt's end | open with the medium clause (`amateur photo, ...`) |

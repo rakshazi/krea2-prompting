@@ -17,6 +17,8 @@ Name the register in the medium clause so the model targets it:
 - **Editorial / fine-art nude:** composition-led, gallery register. `fine-art nude study, sculptural side light, matte skin, muted palette, film grain`.
 - **Explicit:** say it plainly and describe anatomy and action directly. Euphemism and hinting actively pull the image back toward soft-focus.
 
+Register swaps are single-variable changes: keep the identity block, body description, and act clauses identical, swap only the medium clause plus light language. Verified across an anime-to-photoreal swap of the same cast (silver bob, cosplay ears, tail, generous bust, pregnant belly): identity held frame to frame.
+
 ## Vocabulary
 
 **Anatomy, plain nouns.** Female: `vulva, labia majora, labia minora, clitoris, vaginal opening, mons pubis, perineum, anus`. Male: `penis, glans, shaft, foreskin, testicles`. Colloquial words (`pussy`, `cock`, `cum`, `asshole`) bind just as well; many NSFW LoRAs are trained on exactly those tokens. Pick one register and stay consistent inside a prompt.
@@ -36,6 +38,8 @@ State `vaginal` when the orifice could be misread. State the positive target ins
 
 The doggy block above is verified end-to-end with wardrobe, toy, and fluids stacked on top (see the translation example). Multi-person scenes hold contact points while limb placement drifts; explicit position names alone carry nothing without the geometry clauses.
 
+**Breast play (partnered, tested).** Oral breast work settles at the areola: `deeply sucking her breast with her mouth closed around the nipple and areola, the nipple swallowed deep inside her mouth, cheeks hollowed` rendered lips sealed on the areola with the tongue working it, nipple staying outside the mouth; re-aiming at the nipple (`lips wrapped around the nipple like a lollipop, the nipple pulled deep inside her mouth and no longer visible`) produced the same areola kiss. Four attempts across generations with and without size LoRAs never put the nipple in: swallowing is a hidden depth state, and the model renders the visible surface. Hand-based nipple play fails two ways: stretch wording (`pulling it gently outward until it stretches into a long taut point`) grows a long tube of tissue from the nipple to the fingers; rolling wording (`rolling it gently between her thumb and forefinger`) floats the hand beside the breast, fingertips unattached. Fingertip-scale targets need a surface anchor: hand acts land on the belly, hip, thigh, or breast; at the scale of a nipple the hand floats or the tissue deforms. When the nipple specifically matters, sell the areola: lips and tongue on it render every time, and any hand anchors to the breast surface.
+
 **Fluids and mess.** `thick white cum, ropes of cum across her stomach, cum dripping down her thigh, creampie dripping out of her pussy, saliva stringing between lips, oil sheen, film of sweat, wet spot on the sheets`. Literal beats hinted: `thick cum bubbling out of her hairy pussy` renders; "a messy finish" does not. Tested explicit renders: creampie pooling (`thick white cum pooling in her vaginal opening and dripping down her perineum onto the sheets`), squirting (`mid-squirt, a stream of clear fluid spraying from her pussy onto the sheets`), grool (`thick stringy grool`, a milky opaque discharge, its own trained look), and scooping (`scooping cum out of her gaping pussy, cum stringing between her fingers`). Fluid strings need a solid anchor (toy, held object); strings to her own labia fall unrendered.
 
 **Body hair.** The base model defaults to sanitized, hairless bodies. Command it when it matters: `completely natural untrimmed bush`, `trimmed landing strip`, `fully shaved with faint stubble`. Same for men: `natural body hair, happy trail`.
@@ -48,6 +52,8 @@ The doggy block above is verified end-to-end with wardrobe, toy, and fluids stac
 
 Tested on a two-person missionary scene (side profile, per-person descriptions, per-limb contact): faces stayed distinct, both bodies whole, penetration connected. Expect contact *points* to hold while limb *placement* drifts: her legs went up over his shoulder despite the prompt, a hand landed beside its target. Iterate limb placement one clause at a time on a fixed seed.
 
+The same per-person descriptions plus explicit left/right pins (`kneels at her right side`, `at her left side`) held across a three-body scene: faces stayed distinct, each companion attached to the correct side. Two multi-body failure modes verified on three-body office frames: a companion's face can drop out of frame entirely in a busy composition, which a per-companion `faces visible` clause fixed on the next roll; and wardrobe only renders on limbs that are actually in frame, so a stocking claim silently dropped for the companion whose legs were hidden.
+
 ## Camera for explicit work
 
 Shot size controls explicitness as much as wording does: wide reads environmental, medium shows the bodies, `close-up` isolates the act or the anatomy, macro pushes texture. A close-up also crops out hands and feet, the usual anatomy failure zones.
@@ -58,8 +64,11 @@ Camera register changes the whole feel, and it must live in the opening medium c
 - `90s camcorder still frame, grainy` -> candid/leaked aesthetic.
 - `85mm f/1.8, soft bedside lamplight` -> polished erotic photography.
 - `35mm, environmental, candlelight` -> cinematic intimacy.
+- `35mm f/1.8 shallow depth of field, shot on Cinestill 800T, motivated location light (LED racks, monitor glow, ceiling light panel)` -> candid late-night shoot; reusing the same stock grade across scenes unifies a set.
 
 `8k, masterpiece, cinematic lighting` pushes toward the sanitized AI look.
+
+Flash is the wrong register for tone-matching work. Pale skin, a lip or nipple that must match the body, and any brief that says "same tone everywhere" all fight the warm cast that flash adds. For those renders use `soft overcast daylight, neutral white balance` and read the skin tone section in `photoreal.md`.
 
 ## Prompt architecture for explicit scenes
 
@@ -139,6 +148,8 @@ Findings marked tested come from Krea 2 NSFW finetunes; base-model and other fin
 | Face state ignored | face turned away or soft-focus in frame | unobstructed face, expression clause next to the camera clause |
 | Genitals dry despite an erotic scene | fluid clause missing from the prompt | add the fluid clause every time; unstated fluid renders absent |
 | Rubber skin in explicit close-ups | no texture cues | pores, body hair, sweat sheen, flush |
+| Vulva and pubic skin render flushed pink inside an otherwise pale frame | harsh flash with a warm white balance, plus an anatomy LoRA near the top of its band | `soft overcast daylight, neutral white balance`; tie the tone to a body part (`the same pale skin tone as her thighs`); drop the anatomy LoRA to about 0.7 |
+| An anatomy slider nudged to ±1 changes nothing | the working band sits higher than the declared one | confirm the direction at ±5, then settle into the usable band |
 | Correct anatomy but unerotic mood | no arousal state | erect nipples, flush, parted lips, wetness |
 | Mosaic-style censor bars | phrasing drifted into stock-JAV look | keep plain Western phrasing, reroll seed |
 | A feature droops despite a size LoRA | `heavy`/`sag` wording in the identity block | use a neutral size noun plus the desired shape; drop the droop adjective |
@@ -166,6 +177,12 @@ Findings marked tested come from Krea 2 NSFW finetunes; base-model and other fin
 | Strong KNP weighting in a tight upskirt crop loses the character | weighting taxes identity and the crop cuts identifying features | re-pin the identity clauses visible in the crop |
 | Majora flattened to prominent minora in KNP arms | KNP outvotes the puffy-majora clause even re-pinned | drop KNP for closed-labia targets; a closed-labia LoRA at low strength renders the puffy-closed look, at the cost of thinner fluid |
 | Blouse drifts open in under-table camera shots | low camera looking up biases the neckline open | state `fully buttoned` explicitly for an innocent top under an upskirt camera |
+| Wardrobe (stockings, socks) missing on one body | the clothed limb is out of frame or hidden | keep every clothed body's legs in frame; wardrobe claims only render on visible limbs |
+| A companion's face is hidden or buried in a multi-body frame | the face is not pinned as visible in a busy composition | per-companion `face visible` clause next to the description |
+| Unreadable letters appear in a frame corner | a trained trigger token rendered as literal text | small and harmless; crop or accept |
+| Fingers soften to a hand resting on the vulva in a supine pregnant scene | a dominant body element (the belly) anchors the frame and outvotes micro-contact | drop the competing hand-on-belly clause so both hands are free; re-pin the finger clause with `knuckles visible` |
+| Nipple stays outside the mouth despite swallow wording | swallowing is a hidden depth state; the mouth anchors to the areola surface | sell the areola: `mouth closed around the areola, tongue working around it` |
+| Nipple pinch grows a tissue tube, or the hand floats beside the breast | fingertip-scale target with no surface anchor | drop the nipple specificity; anchor the hand to the breast surface or a larger body element |
 
 ## Translating crude briefs into Krea 2 prose
 
