@@ -123,6 +123,12 @@ Treat 0.25 to 0.35 as the working range. When you override `layout_prompt`, stat
 because that pass decides the framing before any reference is seen. Keep lettering out of the plan there too: the same
 override flattened a large headline into invented letters.
 
+### Three or more figures
+
+The split does not scale to a crowd. Seven characters seated in a row, prompt-only with no references wired, came back as an even line of identical backs: the same shoulder width, the same spacing, the outer two sliced by the frame edge, and one of them rendered without clothes. Nothing in that prompt was ambiguous. The model has no notion of a crowd, so it tiles the one figure it knows.
+
+Build the set piece as two jobs instead. Render the empty location plate with the single character who belongs in it, render every other character in her own frame, then composite. The plate holds the counter line, the light and the perspective still, and each character comes from a prompt tuned for her alone. The composite needs a silhouette that stays outside the paste zone, so keep hands and props off the surfaces that will be covered.
+
 ## Route B: reference latents, the style route
 
 Same graph, plus the latent pathway:
@@ -172,15 +178,10 @@ feature drifts, edit the sheet instead of stacking more identity adjectives into
 | A prop character grows the cast's ears or tail | species traits leaking from the reference | wire only the references the frame needs, and keep anthropomorphic props out of it |
 | A small accessory floats beside a head | sheet accessories detaching from the design | re-seed, and state where the accessory sits |
 | An outfit accent lands on the wrong garment | the sheet's trim colour read as a separate piece | say where the accent sits, e.g. the lining stays inside the open jacket |
-| Quoted text is mirrored or grows strokes | lettering on a curved or angled surface | short text on a flat surface facing the camera, five words at most, with the joke readable without it |
 | Wrong hair or tail colour, flatter linework, tight unexpected crop | layout split pushed to 0.5 | keep the split at 0.25 to 0.35, and state the shot in `layout_prompt` when you use it |
 | Reference ignored | the prompt never names it | add `Picture N` for every connected image |
 | References pasted side by side like a collage | busy reference backgrounds, or no layout split | clean single-pose refs, split the schedule |
 | Face drifts between scenes | reference too small, or a thin identity block | tighter full-body sheet, concrete identity nouns, face sheet for close-ups |
-| Oversaturated, blown contrast | CFG above about 1.5 | CFG 1.0 |
-| Outlines shred into noise | steps pushed up on a turbo checkpoint | 8 steps, `euler` and `simple`, shift 1.15 |
-
-A negative prompt does nothing here: at CFG 1.0 the negative branch is inert. State the positive target instead.
 
 ## Other reference stacks
 
@@ -195,16 +196,6 @@ A negative prompt does nothing here: at CFG 1.0 the negative branch is inert. St
 ComfyUI 0.45.4, a Krea 2 Turbo finetune (Lustify v10), `qwen3-vl-4b-heretic` fp8 encoder, `qwen_image_vae`, 8 steps,
 CFG 1.0, shift 1.15, 2048x1152 output, references at 1024 to 1728 on the long side.
 
-Run during the work that produced this file: identity held across seeds 101 and 202 (one reference) and seed 303 (two
-references, after the split), all with different scenes; two
-refs of one character duplicated her; two different refs duplicated the subject until the 0.25 split; latent
-references without the LoRA produced the blocky patch grid; the Wan VAE muddied the latent route; both fp8 encoders
-encoded vision tokens.
-
-Second pass, 20 scenes at 2048x1152, two references, vision route, same settings. Identity held across the set. The
-failure modes were duplicated figures in crowded frames, the cast's ears and tail on a paper envelope character, a
-jacket lining painted onto the blouse under it, hairpins floating beside another character's head, and a can label
-that rendered as "SPAIM". The duplicate cure was one reference per frame: splits of 0.25, 0.35 and 0.5 all kept
-cloning a character across several seeds until the second character left the scene. A single-reference frame at split
-0.5 showed the cost of that setting: tail colour drifted, linework flattened toward vector, and the text-only pass
-chose a tight crop that cut the head out of frame.
+Two passes stand behind the rules above: three seeds with one and two references across different scenes, then 20
+scenes at 2048x1152 with two references on the vision route. Identity held across both. Both fp8 encoders encoded
+vision tokens.

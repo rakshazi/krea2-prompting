@@ -38,11 +38,11 @@ Everything the agent reads on demand lives in `references/`.
 
 | File | What it does |
 |---|---|
-| `SKILL.md` | The entrypoint. Mental model, ComfyUI defaults, prompt order, workflow, pre-flight rules. Start here. |
+| `SKILL.md` | The entrypoint. Mental model, ComfyUI defaults, prompt order, workflow, the six checks every prompt gets, and a table of tested traps that points at the right reference. Start here. |
 | `photoreal.md` | Camera, lens, film, light, texture. Skin tone and light temperature. Portraits, products, landscapes, architecture, heroes. |
-| `krea2-core.md` | Deep architecture, negative families, poster text, speech bubbles, staged props, composition modules, resolution table, reference reverse-engineering, character consistency. |
+| `krea2-core.md` | Poster text, speech bubbles, screens and app UI, staged props, character replacement, character consistency, composition modules, negative families, resolution table, reference reverse-engineering. |
 | `reference-images.md` | Character and style references: two core-node wirings, `Picture N` prompts, the 0.25 layout split and its limits, reference-sheet rules, failure table. |
-| `comfyui-setup.md` | Pipeline, the CFG 1.0 trap, `Krea2PromptWeight`, LoRA strength behaviour, the enhancer, troubleshooting. |
+| `comfyui-setup.md` | Model files, the RAW checkpoint, `Krea2PromptWeight`, LoRA strength, the enhancer, troubleshooting. |
 | `poses.md` | The 11-field pose schema, usage, taxonomy, the field findings, and hands and held objects. |
 | `pose-library.md` | 30 ready-to-paste pose blocks. Copy, paste, stop inventing poses from scratch. |
 | `styles.md` | 289 style names, four full examples, two authoring formulas. |
@@ -52,7 +52,7 @@ Everything the agent reads on demand lives in `references/`.
 | `cosmic-horror.md` | Eldritch entities, impossible anatomy, dread. |
 | `pure-organic-monsters.md` | Strictly biological giants. No metal, no mineral, no cheating. |
 | `examples/` | Ten topics, each prompted twice (generic versus skill), with both renders side by side. |
-| `evals/` | Maintenance harness. `trigger-queries.json` says what should activate the skill; `evals.json` says what a correct answer contains. |
+| `evals/` | Maintenance harness. `trigger-queries.json` says what should activate the skill; `evals.json` says what a correct answer contains; `lint.py` fails when the body outgrows its budget or the same quoted phrase turns up in two files. |
 
 ## The adult one
 

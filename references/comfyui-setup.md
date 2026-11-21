@@ -1,6 +1,6 @@
 # ComfyUI Setup and Prompt Weighting
 
-The ComfyUI pipeline for Krea 2 Turbo, the CFG explanation, the optional prompt-weighting node, and a troubleshooting table. Read this when wiring the graph or when a prompt needs mechanical emphasis that words alone will not give.
+The files behind the Krea 2 Turbo graph, the RAW checkpoint, the optional prompt-weighting node, LoRA strength, and a troubleshooting table. Read this when wiring the graph, when a LoRA misbehaves, or when a prompt needs mechanical emphasis that words alone will not give. Sampler values are in the SKILL.md settings table.
 
 ## The pipeline
 
@@ -9,29 +9,20 @@ The ComfyUI pipeline for Krea 2 Turbo, the CFG explanation, the optional prompt-
 | Diffusion model | `krea2_turbo_fp8_scaled` (or `krea2_turbo_fp8`) | The 8-step distilled turbo checkpoint. |
 | Text encoder | `qwen3vl_4b_fp8_scaled` (or `bf16`) | bf16 is higher precision and heavier on VRAM. |
 | VAE | `qwen_image_vae` | The official pairing. |
-| Sampler / scheduler | `euler` / `simple` | Official default. |
-| Steps | `8` | Turbo is distilled to 8. |
-| CFG | `1.0` | See below. |
-| Shift (mu) | `1.15` | Set on the ModelSampling node (timestep shift). |
-| Resolution | Native 2048; minimum 1024; divisible by 16 | Panoramic ratios widen the long edge. |
 
 The RAW (undistilled) checkpoint is a different job: 52 steps, CFG 3.5, up to 1024. Use RAW to train LoRAs and for slow exploratory variety; LoRAs trained on RAW transfer to Turbo. The guidance from the model authors is "train on RAW, run on Turbo".
 
 **Tested long-run verdict:** pushing the turbo finetune to 50 steps / CFG 2.5 produced a noisy, texture-shredded frame instead of cleaner geometry (CFG above 1.0 doubles the forward passes per step, and the distilled schedule expects 8). Stay at 8 steps / CFG 1.0; handle multi-element scenes with one act per zone.
 
-## The CFG value
+## Why the negative prompt is dead
 
-The official command-line inference uses `--cfg 0.0`. A standard ComfyUI KSampler treats literal `0.0` as pure unconditional output, which breaks the image, so in ComfyUI set **CFG `1.0`**. Above roughly `1.5` the image oversaturates and distorts. At CFG 1.0 the negative term cancels out of the CFG equation, so a negative prompt has no effect; steer through the positive prompt, or through negative weights (below).
+At CFG 1.0 the negative term cancels out of the CFG equation, so a negative prompt has no effect. Steer through the positive prompt, or through negative weights (below).
 
 ## VAE troubleshooting
 
-If colours or fine texture look subtly wrong versus a reference, the VAE is the cheapest variable to check first. Some community workflows swap in a Wan-family 16-channel VAE; it runs, but the official pairing is the Qwen-Image VAE. Swap back to `qwen_image_vae` before chasing any other cause.
+Some community workflows swap in a Wan-family 16-channel VAE. It runs, and colours or fine texture come out subtly wrong. Swap back to `qwen_image_vae` before chasing any other cause.
 
-## Reference images
-
-Krea 2 reads reference images as Qwen3-VL vision tokens, so a picture can carry identity, outfit and proportions into the prompt. Two core-node wirings cover it: vision tokens alone for a recurring character, plus VAE latents and `krea2_style_reference` for style transfer. `references/reference-images.md` has the node tables, the `Picture N` prompt shape, the 0.25 layout split that stops duplicated figures, the reference-sheet rules and the failure table.
-
-## Prompt weighting (optional node)
+## Prompt weighting
 
 Weighting is a **node feature**, absent from the base model. It comes from `Krea2PromptWeight` (ComfyUI-KJNodes), which does per-token attention-value scaling through the Qwen3-VL encoder. On the stock `CLIPTextEncode`, the `(word:1.3)` syntax shoves the entire sentence conditioning and the image falls apart past about 1.2, so install the node before relying on any of this.
 
@@ -56,7 +47,7 @@ Weighting is a **node feature**, absent from the base model. It comes from `Krea
 
 `Krea2T-Enhancer` (capitan01R) patches the text-fusion stage at runtime to raise prompt adherence. It is third-party and experimental, absent from the official pipeline, and it changes how hard all weighting bites. Bypass it to get a clean baseline before tuning anything else.
 
-## LoRA strength behaviour
+## LoRA strength
 
 Slider-style LoRAs (the kind exported by slider training tools) behave differently from concept LoRAs, and that trips up the first test. Five things learned the hard way, at one fixed seed each:
 
@@ -64,7 +55,7 @@ Slider-style LoRAs (the kind exported by slider training tools) behave different
 
 **Test a LoRA in the scene it was trained for.** A wetness slider trained on rain and sweat does nothing in a dry bedroom, and floods the whole frame once pushed hard. The filename is a hint about the training set; the A/B is what tells you what the weights do.
 
-**Colour bias scales with strength.** A concept LoRA near the top of its band drags its own palette in with it: anatomy that comes back flushed pink at 0.9 can match the surrounding skin at 0.7. Treat strength as a colour lever as well as a shape lever, and judge colour apart from form.
+**Colour bias scales with strength.** A concept LoRA near the top of its band drags its own palette in with it: anatomy that comes back flushed pink at 0.9 can match the surrounding skin at 0.7. Treat strength as a colour lever as well as a shape lever, and judge colour apart from form. When colour drifts warm as a LoRA is pushed, drop the strength and add the light and tone anchors from `references/photoreal.md`, "Skin tone and light temperature".
 
 **Extremes move more than the target.** At the top of a slider range the framing, the crop and the pose can drift along with the attribute: one measured -5 run pulled the camera back and closed the legs halfway, on a seed where the ±5 pair for a different slider held the composition still. Score framing and the target attribute as two separate questions.
 
@@ -80,25 +71,11 @@ Same seed is the instrument for all of this. With the seed fixed, composition ho
 | Oversaturated, distorted | CFG above ~1.5 | lower to `1.0` |
 | Weights do nothing | patched `MODEL` output not wired to the sampler | wire both node outputs |
 | Weights do nothing (part 2) | global `strength` too low | raise toward `1.0` |
-| A LoRA shows no visible effect | strength sits in a slider's dead zone | confirm at ±3 to ±5, then settle into the usable band |
-| Colour drifts warm as a LoRA is pushed | palette bias scales with strength | drop the strength, and add light and tone anchors (see `photoreal.md`) |
 | Artifacts, blown contrast | a weight above `3.0` | cap emphasis at `3.0`; work in `1.5` to `2.5` |
 | Prompt parse error | stray or nested paren, missing colon | one level, colon required: `(word:1.5)` |
 | `no X` in the prompt does nothing | no working negative branch at CFG 1.0 | use `(X:-2)` with the weighting node, or describe the positive target |
 | Colours or texture subtly off | non-standard VAE | switch to `qwen_image_vae` |
 | Soft, mushy detail | too few steps or wrong scheduler | confirm 8 steps, `euler`/`simple`, shift `1.15` |
-
-## Quick reference card
-
-```
-TURBO (ComfyUI)   8 steps · CFG 1.0 · shift(mu) 1.15 · euler/simple · 1024-2048px
-RAW               52 steps · CFG 3.5 · <=1024px · train LoRAs here, run on Turbo
-FILES             krea2_turbo_fp8_scaled · qwen3vl_4b · qwen_image_vae
-TEXT              put words to render in "quotes", keep short
-NEGATIVES         near-inert at CFG 1.0 · steer positive, or use negative weights
-WEIGHTS (node)    (kw:1.1-3) emphasize · (kw:0.1-0.9) soften · (kw:-1..-5) invert
-                  >3.0 breaks · wire BOTH model + conditioning · strength = master gain
-```
 
 ## Sources
 

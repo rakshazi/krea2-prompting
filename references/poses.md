@@ -73,10 +73,6 @@ The source library is organized as 30 groups of ten poses (300 total). This refe
 
 Groups 3, 4 and 6-30 (poses 21-40, 51-300) are **not included.** The three included groups live in [`pose-library.md`](pose-library.md); the rest are implied by the numbering. When you need a pose that isn't there, write it yourself against the 11-field schema; that is the whole point of the schema being explicit.
 
-## The 30 poses
-
-Full descriptor blocks live in [`pose-library.md`](pose-library.md). Copy-paste directly.
-
 ## Writing your own pose
 
 Fill all 11 fields. Write each as a full declarative sentence. Two conventions from the pose library worth copying:
@@ -86,7 +82,7 @@ Fill all 11 fields. Write each as a full declarative sentence. Two conventions f
 
 ## Field findings from explicit-scene testing
 
-- **Prose beats schema for explicit scenes.** All 70+ test renders used plain natural-language pose clauses; the schema's value showed up indirectly: `seen from directly behind at bed level`, `hips raised on a pillow`, and `shoulders on the bench, hips raised high` are effectively inline torso/leg fields, and they rendered precisely. When a pose must be exact and the act leaves room to improvise, use the schema; when the act pins the geometry, prose contact clauses suffice.
+- **Prose beats schema for explicit scenes.** All 70+ test renders used plain natural-language pose clauses; the schema's value showed up indirectly: the rear bed-level camera clause in `references/adult.md`, `hips raised on a pillow`, and `shoulders on the bench, hips raised high` are effectively inline torso/leg fields, and they rendered precisely. When a pose must be exact and the act leaves room to improvise, use the schema; when the act pins the geometry, prose contact clauses suffice.
 - **Camera height biases garment state.** A low under-table camera pulled necklines open regardless of coverage wording; state `fully buttoned` for innocent tops under upskirt cameras.
 - **Pose verbs lose to equipment nouns.** `mid-squat` with no station named landed her on the wrong machine; name the station (`in a squat rack`) plus the movement phase.
 - **Garment processes do not render.** `pulling up`, `rolled midway`, `bunched at the calf` all collapsed to the worn state across nine arms; renderable states are fully on, fully off, in hand.
@@ -96,7 +92,7 @@ Fill all 11 fields. Write each as a full declarative sentence. Two conventions f
 
 `hand_position` is the field that fails most often in staged scenes. A fist wrapping a detached prop came back, across seeds, with the thumb as a separate pill, an extra knuckle, and the prop floating just above the fingers. Open palms, hands on hips and spread fingers rendered clean on every attempt.
 
-- Ranked fixes: present the prop on an open palm; give the fist a cuff, handle or stick to wrap; let the prop hover a short gap above the palm for undead or magical props; render the prop alone and composite it onto a clean hand.
+- Ranked fixes: present the prop on an open palm; give the fist a cuff, handle or stick to wrap; let the prop hover a short gap above the palm for undead or magical props; render the prop alone and composite it onto a clean hand, or cut and move it in post where it sits on flat paper.
 - Name the contact and the shape: `her fist closes around the torn cuff, the thumb wrapped across the front of the fingers`. A bare `holding it` gives the model nothing to grip.
 - Count digits on both sides. Five fingers per hand for the character, five on the prop.
-- When the prop is detached, say why it reads detached: `no arm above the cuff`, `a clear gap of cream paper between the cuff and her sleeve`.
+- A detached prop also needs its own material and a visible gap: `references/krea2-core.md`, "Staged props".

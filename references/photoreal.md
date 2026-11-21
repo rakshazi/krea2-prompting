@@ -1,10 +1,8 @@
 # Photorealism Reference
 
-The default reference for a realistic photograph: portrait, product, landscape, architecture, street, editorial, or landing-page hero. Krea 2 is trained to avoid the oversaturated plastic "AI look", so realism is already in the weights. The prompt's job is to describe a concrete photographic setup. Piling on realism adjectives adds little.
+The default reference for a realistic photograph: portrait, product, landscape, architecture, street, editorial, or landing-page hero.
 
-## The governing principle
-
-Light and material language beat quality adjectives. `photorealistic` alone is weak: it names a preference and gives the model no setup to render. A prompt that names the camera, the lens, the light source and direction, and the actual surface materials will read as photographed. A prompt that stacks `ultra realistic, hyperdetailed, 8k, masterpiece` will look generic. Describe the shoot, and the realism follows.
+Light and material language beat quality adjectives. `photorealistic` alone is weak: it names a preference and gives the model no setup to render. A prompt that names the camera, the lens, the light source and direction, and the actual surface materials reads as photographed. A prompt that stacks `ultra realistic, hyperdetailed, 8k, masterpiece` looks generic. Describe the shoot, and the realism follows.
 
 ## Vocabulary that pushes toward photography
 
@@ -23,8 +21,6 @@ Light and material language beat quality adjectives. `photorealistic` alone is w
 **Diegetic fantasy (cosplay framing).** Fantasy anatomy in a photoreal frame needs a costume frame or it reads as illustration: `realistic furry cosplay cat ears with pink inner fur` and `a fluffy white cosplayed cat tail` rendered as plausible cosplay in an office and a server room, while bare `cat ears` would float. Frame the impossible as wardrobe.
 
 **Candid amateur register (tested on Krea 2 NSFW finetunes).** `amateur photo` as the opening medium clause plus `harsh direct flash`, `natural skin texture with visible pores`, and `film grain` is the workhorse register: it holds identity, produces warm candid color, and cooperates with explicit content. The register clause goes FIRST: a register buried at the prompt's end is ignored and the polished editorial look returns. Skin realism cue that survives every scene: `film grain` plus one named imperfection family (pores, sweat sheen, flush); stacked realism adjectives still do nothing.
-
-State imperfection positively. Write `natural skin texture with visible pores`; avoid `no plastic skin` (negation is weak here, and the encoder may reinforce the noun you tried to ban).
 
 ## Skin tone and light temperature
 
@@ -117,17 +113,11 @@ Workflow for heroes: draft on Turbo to nail composition fast, iterate one field 
 | Flat, un-photographed look | no light language | name the source, direction, and quality of the light |
 | Plastic or dead skin | asked for realism with adjectives | name pore texture, vellus hair, catchlights; name the film stock |
 | Materials look fake | surfaces unnamed | state each material (`wet stone`, `brushed steel`, `linen weave`) |
-| Skin reads flushed or pink | harsh flash with a warm white balance | `soft overcast daylight, neutral white balance`, and anchor the tone to a body part |
-| One body part sits a shade off the rest of the skin | tone stated on that part alone | tie it to a reference part: `the same pale tone as his arms` |
-| Pale brief still comes back warm | a LoRA carrying that part is over-strength | drop its strength to about 0.7, then re-judge shape |
-| Wrong crop | ratio chosen after styling | set the aspect ratio in the initial prompt |
-| No room for the headline | no reserved negative space | add an explicit quiet zone for overlaid text |
-| Register ignored, polished look persists | medium clause placed at the prompt's end | open with the medium clause (`amateur photo, ...`) |
+| Skin flushed, pink, or a shade off between body parts | flash, an unanchored tone, or an over-strength LoRA | the three levers in "Skin tone and light temperature" above |
 | One element of a three-element scene missing | attention dilution at 8-step turbo | keep one act per zone; split three-element scenes into a series at 8 steps / CFG 1.0 |
 | Two adjacent objects merge into one | simultaneous adjacent items in the same zone | separate the zones spatially, or give each object its own sentence and a color contrast |
 | Second character renders as a stranger | cameo described by name only | full description (hair, eyes, build, clothes) in every prompt; composition order (`in the foreground`, `slightly behind her`) controls frame share |
 | Blurred background people render mangled | too many named background figures | keep two or three background people, faces soft-focus |
-| Drift after an edit | several fields changed at once | lock the subject, change one variable per iteration |
 
 ## Note on other Krea models
 

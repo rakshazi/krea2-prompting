@@ -1,21 +1,16 @@
 ---
 name: krea2-prompting
 description: >-
-  Write, revise, and debug natural-language prompts for Krea 2 and Krea 2 Turbo image generation in ComfyUI, with the
-  sampler settings that go with them: photoreal photography, portraits, products, architecture, style and pose blocks,
-  giant-scale scenes, staged props, speech bubbles, and adult/NSFW work. Use this skill when the user asks for an
-  image prompt (Krea 2 is the assumed model when none is named), wants a scene, brief, or reference photo turned into
-  prompt text, wants the same character kept across images with reference images, asks how to wire Krea 2 references
-  in ComfyUI, asks about Krea 2 settings (steps, CFG, shift, resolution, sampler), or mentions Krea, Krea 2 Turbo,
-  Qwen3-VL prompting, ComfyUI image prompts, reference images, character consistency, pose blocks, held objects,
-  speech bubbles, style names, or NSFW/18+ image generation, even when the request only describes the picture they
-  want. Returns prompt text, settings, and ComfyUI wiring; it does not run renders or touch a ComfyUI server.
+  Write, revise or debug image prompts and sampler settings for Krea 2 and Krea 2 Turbo in ComfyUI. Use when the user
+  asks for an image prompt (Krea 2 is assumed when no model is named), only describes the picture they want, or asks
+  about reference images, character consistency, pose or style blocks, speech bubbles, Krea 2 settings, or NSFW/18+
+  images. Returns prompt text, settings and wiring; runs no renders.
 license: CC-BY-SA-4.0. Full text in LICENSE.
 compatibility: >-
   Text-only: no scripts, network, GPU, or ComfyUI endpoint required. The agent needs file-read access to load
   references/ on demand. Hosted clients with content filters may block references/adult.md, which is 18+.
 metadata:
-  version: "1.3.0"
+  version: "1.4.0"
   author: rakshazi
   source: https://github.com/rakshazi/krea2-prompting
   tested-on: Krea 2 Turbo, qwen3vl_4b encoder, qwen_image_vae, 8 steps, CFG 1.0, reference images on ComfyUI 0.45.4
@@ -23,36 +18,34 @@ metadata:
 
 # Krea 2 Turbo Prompting
 
-Turn a visual brief, reference image, or scene idea into a copy-ready Krea 2 Turbo prompt plus ComfyUI settings. Treat the model as a natural-language visual interpreter: describe what is visible, where it sits, how light hits materials, and what camera would capture it. The output is prompt text and settings; rendering happens in ComfyUI, done by the user.
+Turn a visual brief, reference image, or scene idea into a copy-ready Krea 2 Turbo prompt plus ComfyUI settings. Describe what is visible, where it sits, how light hits materials, and what camera would capture it. The output is prompt text and settings; the user renders in ComfyUI.
 
 ## Mental model
 
-Krea 2's text encoder is **Qwen3-VL, a language model** (the same family as a chat LLM, rather than a CLIP or T5 text encoder). It parses full sentences. Four consequences drive everything below:
+Krea 2's text encoder is **Qwen3-VL, a language model** (the same family as a chat LLM, where older image models use CLIP or T5). It parses full sentences. Four consequences drive everything below:
 
-- **Write natural-language prose.** Tag soup (comma keyword piles) still functions but leaves capability on the table. Long detailed prompts yield the best results; short prompts (5 to 20 words) are fine for exploration.
-- **Order carries emphasis.** The encoder front-loads: whatever comes first reads as the subject. Lead with the thing that matters most.
-- **The model is trained against the plastic "AI look."** Photorealism is the family's headline strength and it is baked into the weights. Your job is to supply a concrete photographic setup (camera, lens, light, material). Stacking realism adjectives like `ultra realistic, 8k, masterpiece` does little.
-- **A reference image outranks adjectives.** The same encoder is a vision model, so an attached picture enters the prompt as vision tokens and supplies identity, outfit and proportions directly. For a recurring character, supply the picture and spend the prompt on scene and style; see `references/reference-images.md`.
+- **Write natural-language prose.** Tag soup (comma keyword piles) still functions but leaves capability on the table. Long detailed prompts yield the best results; 5 to 20 words is fine for exploration.
+- **Order carries emphasis.** Whatever comes first reads as the subject. Lead with the thing that matters most.
+- **Realism comes from a photographic setup.** The model is trained against the plastic "AI look", so name the camera, lens, light and material. Stacking `ultra realistic, 8k, masterpiece` does little.
+- **A reference image outranks adjectives.** The encoder is also a vision model: an attached picture supplies identity, outfit and proportions directly, and the prompt is spent on scene and style.
 
-## ComfyUI Krea 2 Turbo settings
+## Settings
 
-Recommend these as defaults. They are the reconciled, ComfyUI-correct values.
+Krea 2 Turbo in ComfyUI. Recommend these as defaults.
 
 | Setting | Value | Note |
 |---|---|---|
-| Steps | `8` | Turbo is distilled to 8. Longer runs on turbo finetunes grow noisier instead of cleaner (tested: 50 steps + CFG 2.5 shredded texture). |
-| CFG | **`1.0`** | Critical. See the gotcha below. |
+| Steps | `8` | Turbo is distilled to 8. More steps grow noisier (tested: 50 steps + CFG 2.5 shredded texture). |
+| CFG | **`1.0`** | The official CLI says `0.0`; in a ComfyUI KSampler literal `0.0` is pure unconditional output and breaks the image. Above ~1.5 it oversaturates and distorts. |
 | Shift (mu) | `1.15` | Timestep shift, set on the ModelSampling node. |
 | Sampler / scheduler | `euler` / `simple` | The official default. `beta` also works. |
-| Resolution | Native `2048`; minimum `1024`; dims divisible by 16 | Krea 2 was trained at 2048. Generate native; avoid gen-at-1024-then-upscale. Panoramic ratios widen the long edge; see the core table. |
+| Resolution | Native `2048`; minimum `1024`; dims divisible by 16 | Trained at 2048. Generate native; avoid gen-at-1024-then-upscale. Panoramic ratios widen the long edge past it. |
 | Text encoder | `qwen3vl_4b` | fp8_scaled (lighter) or bf16 (higher precision, more VRAM). |
-| VAE | `qwen_image_vae` | If colours or fine texture look subtly off, this is the first variable to check. |
+| VAE | `qwen_image_vae` | If colours or fine texture look subtly off, check this first. |
 
-**The CFG gotcha.** The official CLI uses `--cfg 0.0`. In a standard ComfyUI KSampler, literal `0.0` produces pure unconditional output and breaks the image, so use **`1.0`** there. Do not push CFG above ~1.5; it oversaturates and distorts. At CFG 1.0 the negative branch is effectively inert (see Core rules).
+Aspect ratio follows the composition: `1:1` product/portrait, `16:9` cinematic/hero, `21:9` panoramic, `2:3` or `9:16` poster/phone, `4:3` broad environment. Pixel sizes per ratio are in `references/krea2-core.md`.
 
-Aspect ratio follows the composition: `1:1` product/portrait, `16:9` cinematic/hero, `21:9` panoramic, `2:3` or `9:16` poster/phone, `4:3` broad environment. Full resolution table in `references/krea2-core.md`.
-
-**Finetune divergence.** Community NSFW finetunes often ship their own text encoder, VAE, shift, and sampler settings. Use the finetune's model card for those values; the prompt architecture and CFG guidance above still apply.
+A community finetune may ship its own text encoder, VAE, shift and sampler: take those from its model card. The CFG value and everything about prompting still apply.
 
 ## Prompt architecture
 
@@ -68,46 +61,57 @@ A reliable sentence frame:
 
 > A [medium/style] of [subject], [appearance and action], set in [environment]. The composition uses [shot, angle, lens], placing [subject] relative to [frame and other elements]. Light comes from [direction/source] with [shadow and palette]. [Materials and micro-detail] stay visible, creating a [mood] atmosphere. [Restrictions].
 
-Make spatial relationships grammatical and explicit (left/right thirds, foreground/midground/background, contact with surfaces, what extends beyond the frame) rather than listing disconnected nouns. Name a concrete medium (`editorial fashion photography`, `documentary photograph`, `architectural photography`) instead of `beautiful` or `nice`.
+Make spatial relationships grammatical and explicit (left/right thirds, foreground/midground/background, contact with surfaces, what extends beyond the frame). Name a concrete medium (`editorial fashion photography`, `documentary photograph`, `architectural photography`) where a weaker prompt says `beautiful` or `nice`.
 
 ## Workflow
 
-1. **Classify the brief.** Route it (photoreal, style, pose, adult, giant-scale) and pull out the hard constraints: text to render, aspect, register, number of people, what must stay fixed. Ask only when a missing detail changes the picture; otherwise state the assumption and proceed.
-2. **Load one reference by route**, using the map below. Add a second only when the brief genuinely spans two routes.
-3. **Lock composition before writing.** One shot size, one angle, one crop, one aspect ratio, chosen before any wardrobe or decoration.
-4. **Draft in the sentence frame above.** Subject first, then action, then camera, environment, light, materials, mood, carried by full sentences.
-5. **Run the core rules as a pre-flight check**, scanning the draft for negations (`no people` becomes `an empty street`) and for stacked quality adjectives. Fix what fails, then emit.
-6. **Emit in the output shape at the end.** Positive prompt, then settings, plus a negative prompt only when one recurring artifact needs suppressing.
+1. **Classify the brief.** Pick the route (photoreal, style, pose, adult, giant-scale) and pull out the hard constraints: text to render, aspect, register, number of people, what must stay fixed. Ask only when a missing detail changes the picture; otherwise state the assumption and proceed.
+2. **Read one reference by route** (Routes, below). Add a second only when the brief spans two routes.
+3. **Lock composition before writing.** One shot size, one angle, one crop, one aspect ratio. Wardrobe and decoration come after and must leave the framing alone.
+4. **Draft in the sentence frame.** Subject first, then action, camera, environment, light, materials, mood, in full sentences.
+5. **Check the draft** against every line of "Every prompt", then against each row of "When the brief contains" that matches. Fix what fails.
+6. **Emit in the output shape** at the end of this file.
 
-## Core rules (pre-flight check)
+## Every prompt
 
-- **Text in quotes.** Put the exact words to render in double quotes, keep it short (under ~5 words): `a neon sign reading "OPEN LATE"`. Longer strings degrade. Keep the quoted text on a flat surface that faces the camera: a banner, a box or a plate renders cleanly, while a curved can label or a scroll rolled toward the character comes back with invented strokes or reversed letters.
-- **Negatives are near-inert at CFG 1.0; state preferences positively.** Avoid leaning on a negative-prompt field or a generic ban list. Instead of `no plastic skin`, write the positive target: `natural skin texture, visible pores`. A short negative prompt only earns its place to suppress one specific recurring artifact. (Negative-prompt families for the RAW/CFG-3.5 path live in `references/krea2-core.md`.)
-- **Do not negate in prose either.** `no hat`, `without a beard` will not reliably fire. Describe what IS present.
-- **Weighting `(word:1.3)` is not a stock feature.** On the standard `CLIPTextEncode` over Qwen3-VL, scaling one token shoves the whole conditioning and the image falls apart past ~1.2. It works only with the `Krea2PromptWeight` node (ComfyUI-KJNodes) installed. Without that node, restate for emphasis in words (`oxblood` beats `(red:1.4)`). Full weighting system in `references/comfyui-setup.md`.
-- **Revise one variable at a time.** When a generation is close, change a single field per iteration and hold the rest. Changing several fields at once makes the image drift and hides which change did what.
-- **Light sets skin colour.** `harsh direct flash` adds a warm red cast that fights any pale, even or "matching" skin request. For tone work use `soft overcast daylight, neutral white balance` and tie the tone to a body part (`the same pale skin tone as his arm`). The levers are in `references/photoreal.md`.
-- **A LoRA that changes nothing may be under-driven.** Slider-style LoRAs commonly run to ±5 and read as dead at ±1.5. A/B at one fixed seed up to ±3 or ±5 before writing the file off, and remember that a high strength drags the LoRA's own colour cast in with it. Rule set in `references/comfyui-setup.md`.
-- **Lock composition before decoration.** Decide one shot size, one camera angle, one crop, and the aspect ratio first. Wardrobe and extra detail must not silently change the framing.
-- **Speech bubbles: generate the empty bubble, typeset the line.** Krea 2 letters a few words on a flat surface and mangles a full sentence. For a longer line, put one blank cream speech bubble in the composition (`its interior entirely empty with no lettering`), then set the text in post with a clean font fitted to the bubble's interior. Ask for the bubble up front: drop the clause and the model fills the top of the frame with the character's head, leaving nowhere to put one.
-- **Hands holding things are the weak joint.** A closed fist around an object comes back with the thumb as a detached pill, an extra knuckle, and the object floating beside the grip. An open palm presenting the object, or a cuff, handle or stick for the fist to wrap, renders clean. Name the contact in the prompt.
-- **A prop needs a foreign material.** A detached hand in the character's own skin tone reads as her own hand or an amputation. Wood, stone, grey-green zombie skin, stitches or a torn cuff make it a prop, and a stated gap of paper (`a clear strip of cream paper between the cuff and her sleeve`) keeps it visibly detached.
-- **For a recurring character, attach a reference and lead with it.** `Keep the same <who> from Picture 1: <identity block>.` One clean single-pose reference per character; the reference sets proportions, so a slim sheet renders a slim character whatever the prose says. Wiring, the `Picture N` addressing and the anti-duplication split live in `references/reference-images.md`. A two-character frame that keeps cloning one of them is not fixed by the split alone: drop a character so only one reference is wired, then compose the pair as two shots.
+- **State what IS present.** Negation is near-inert at CFG 1.0, in the negative field and in prose alike. `no people` becomes `an empty street`; `no plastic skin` becomes `skin with visible pores and fine vellus hair`. A negated noun can backfire: the encoder may reinforce the thing you tried to ban. A short negative prompt earns its place only to suppress one specific recurring artifact.
+- **Cut the quality stack.** `8k, masterpiece, best quality, ultra detailed` buys nothing and makes the image look generic. Scan the draft for it and spend those words on camera, lens, light and material.
+- **Rendered text goes in double quotes, five words at most, on a flat surface facing the camera:** `a neon sign reading "OPEN LATE"`. A banner, a box or a plate letters cleanly; a curved can label or a rolled scroll comes back with invented strokes or reversed letters.
+- **Count anything that must appear once.** An uncounted label or prop gets duplicated. Name the one instance, then say what the frame's other lettering is: `exactly one small brass plate on the counter's front edge reads "OMP", and the neon sign is the only other lettering in the scene`. For a person, "the only figure in the frame" is a weak hint: with a long prop list she still cloned herself, so keep the list short and re-roll.
+- **Dress a character top to bottom.** Name the lower garment and the hosiery in the same clause as the top, every time, including for a character you think is fully described. A clause that stops at the hoodie renders nothing below the waist.
+- **Emphasis goes in words.** `oxblood` beats `(red:1.4)`: on the stock encoder a weight shoves the whole conditioning and the image falls apart past ~1.2.
+- **Revise one variable at a time.** Hold the seed and change a single field per iteration. Several changes at once make the image drift and hide which one did what.
 
-## Reference map
+## When the brief contains
 
-Read the reference that matches the task. Each loads only when reached, so pull the ones you need:
+Each row is a tested failure with its fix. The reference holds the exact wording.
 
-- **`references/photoreal.md`** for any realistic photograph: portrait, product shot, landscape, architecture, editorial or landing-page hero. The camera/lens/film/lighting/texture vocabulary and genre recipes with worked example prompts. **This is the default for website and landing-page imagery.**
-- **`references/krea2-core.md`** for the deep prompt architecture: input checklist, negative-prompt families, poster/typography rules, speech-bubble lettering, staged props, composition modules, character consistency, the full resolution table, and reverse-engineering a reference image into a prompt.
-- **`references/reference-images.md`** when a character, outfit or style must come from a picture: the two core-node wirings (vision tokens for identity, reference latents for style), the `Picture N` prompt shape, the 0.25 layout split that stops duplicated figures, the reference-sheet rules, and a failure table.
-- **`references/comfyui-setup.md`** when wiring the base graph or using prompt weighting: checkpoint/encoder/VAE choices, the CFG explanation, the `Krea2PromptWeight` node (syntax, negative weights, global strength), the enhancer node, and a troubleshooting table.
-- **`references/poses.md`** when a human figure's pose must be exact: the 11-field pose schema, usage, taxonomy, tested field findings, and the hand and held-object notes.
-- **`references/pose-library.md`** for the 30 ready-to-paste pose blocks, grouped by standing, locomotion, and object interaction.
-- **`references/styles.md`** to lock a specific aesthetic: a 289-entry style index, four full example paragraphs, and the two authoring formulas.
-- **`references/adult.md`** for adult / NSFW photography (18+): register control, explicit anatomy/arousal/act vocabulary, position geometry, multi-person rules, a tested failure table, and translating crude briefs into Krea 2 prose.
-- Giant-scale creative routes, photoreal cinematic by default: **`references/megastructure.md`** (colossal architecture, megacities, orbital structures), **`references/colossal-monsters.md`** (kaiju, giant beasts), **`references/cosmic-horror.md`** (eldritch entities, dread), **`references/pure-organic-monsters.md`** (strictly biological giant creatures). These share scale logic: concrete exaggerated dimensions, human-scale surface units, a tiny distant scale reference, and 10 to 40 percent environmental negative space.
-- **`examples/`** for worked pairs, each topic written twice (generic prompt versus skill prompt) with both renders. Read `examples/README.md` for the index and open one topic page when the user wants to see what the skill changes or asks for a style anchor.
+| In the brief | Do this | Wording and receipts |
+|---|---|---|
+| A line longer than five words, or a speech bubble | Generate one blank bubble and typeset the line after the render. Ask for the bubble up front, or the head fills the top of the frame. | `references/krea2-core.md`, "Text and lettering" |
+| A screen: chart, chat window, terminal or dashboard | Generate the screen area empty and paste a real screenshot over it. Rewording never fixes a whole interface. | `references/krea2-core.md`, "Text and lettering" |
+| A hand holding an object | An open palm presenting it, or a cuff, handle or stick for the fist to wrap. Name the contact. A closed fist on a bare object breaks. | `references/poses.md`, "Hands and held objects" |
+| A detached or uncanny prop, or a deliberate anatomy joke | Give it a material the character cannot share, and state a visible gap between prop and body. | `references/krea2-core.md`, "Staged props" |
+| A recurring character, "same as last time" | Attach one clean single-pose reference and open the prompt with `Keep the same <who> from Picture 1: <identity block>.` The reference sets proportions whatever the prose says. | `references/reference-images.md` |
+| Two characters from two references | One side and one distinct action each, plus the 0.25 layout split. If one keeps cloning, render two single-reference shots. | `references/reference-images.md`, "Two or more references" |
+| Three or more figures | Render the location with one character, every other character alone, then composite. | `references/reference-images.md`, "Three or more figures" |
+| Pale, even or matching skin tone | Swap flash for soft overcast daylight at a neutral white balance, and tie the tone to a named body part. | `references/photoreal.md`, "Skin tone" |
+| A LoRA that seems to do nothing | A/B at one fixed seed up to ±3 or ±5 before writing it off. A slider reads dead at ±1.5. | `references/comfyui-setup.md`, "LoRA strength" |
+| Emphasis that words cannot give | Weights and negative weights, which need the `Krea2PromptWeight` node. | `references/comfyui-setup.md`, "Prompt weighting" |
+
+## Routes
+
+Read the reference that matches the picture. Each loads only when read.
+
+- **`references/photoreal.md`**: any realistic photograph (portrait, product, landscape, architecture, street, editorial). **The default for website and landing-page imagery.** Camera, lens, film and light vocabulary, skin tone, genre recipes with example prompts.
+- **`references/krea2-core.md`**: posters and lettering, bubbles and screens, staged props, character replacement, the identity block for a recurring character, composition modules, negative families for a live-negative path, the resolution table, and turning a reference image into a prompt.
+- **`references/reference-images.md`**: a character, outfit or style that must come from a picture. Both ComfyUI wirings (vision tokens for identity, reference latents for style), the `Picture N` prompt shape, the layout split, reference-sheet rules, a failure table.
+- **`references/comfyui-setup.md`**: wiring the base graph, the RAW checkpoint, prompt weighting, LoRA strength, troubleshooting.
+- **`references/poses.md`**: a pose that must be exact. The 11-field schema and how to adapt it. **`references/pose-library.md`** holds 30 ready-to-paste blocks.
+- **`references/styles.md`**: locking a named aesthetic. A 289-entry style index, four full paragraphs, two authoring formulas.
+- **`references/adult.md`**: adult / NSFW photography (18+). Register control, explicit vocabulary, position geometry, multi-person rules, a tested failure table, and translating a crude brief into prose.
+- **Giant scale**, photoreal cinematic by default: `references/megastructure.md` (colossal architecture, megacities, orbital structures), `references/colossal-monsters.md` (kaiju, giant beasts), `references/cosmic-horror.md` (eldritch entities, dread), `references/pure-organic-monsters.md` (strictly biological giants). All four share one scale logic: concrete exaggerated dimensions, human-scale surface units, a tiny distant scale reference, and 10 to 40 percent environmental negative space.
+- **`examples/README.md`**: ten topics, each written generic and with this skill, with both renders. Open one when the user asks what the skill changes or wants a style anchor.
 
 ## Output shape
 
@@ -123,3 +127,5 @@ Krea 2 Turbo (ComfyUI): 8 steps, CFG 1.0, shift 1.15
 ```
 
 Add a short negative prompt only when a specific artifact needs suppressing. Never claim a prompt you wrote was tested unless it was.
+
+Editing this skill: read `AGENTS.md` in this directory first.
