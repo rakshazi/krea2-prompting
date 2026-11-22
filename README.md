@@ -42,6 +42,7 @@ Everything the agent reads on demand lives in `references/`.
 | `photoreal.md` | Camera, lens, film, light, texture. Skin tone and light temperature. Portraits, products, landscapes, architecture, heroes. |
 | `krea2-core.md` | Poster text, speech bubbles, screens and app UI, staged props, character replacement, character consistency, composition modules, negative families, resolution table, reference reverse-engineering. |
 | `reference-images.md` | Character and style references: two core-node wirings, `Picture N` prompts, the 0.25 layout split and its limits, reference-sheet rules, failure table. |
+| `references/inpainting.md` | changing a picture that already exists. The edit LoRA and Ostris patch stack, the whole-picture prompt rule, removal and contradictions, what a mask cannot do, crop-render-composite for detail, framing the black fill, a failure table. |
 | `comfyui-setup.md` | Model files, the RAW checkpoint, `Krea2PromptWeight`, LoRA strength, the enhancer, troubleshooting. |
 | `poses.md` | The 11-field pose schema, usage, taxonomy, the field findings, and hands and held objects. |
 | `pose-library.md` | 30 ready-to-paste pose blocks. Copy, paste, stop inventing poses from scratch. |

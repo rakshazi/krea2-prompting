@@ -75,7 +75,7 @@ Same seed is the instrument for all of this. With the seed fixed, composition ho
 | Prompt parse error | stray or nested paren, missing colon | one level, colon required: `(word:1.5)` |
 | `no X` in the prompt does nothing | no working negative branch at CFG 1.0 | use `(X:-2)` with the weighting node, or describe the positive target |
 | Colours or texture subtly off | non-standard VAE | switch to `qwen_image_vae` |
-| Soft, mushy detail | too few steps or wrong scheduler | confirm 8 steps, `euler`/`simple`, shift `1.15` |
+| Soft, mushy detail | too few steps, or `simple` when the brief wants small detail | confirm 8 steps, and switch the scheduler to `beta` for illustration |
 
 ## Sources
 

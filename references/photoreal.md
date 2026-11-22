@@ -22,6 +22,8 @@ Light and material language beat quality adjectives. `photorealistic` alone is w
 
 **Candid amateur register (tested on Krea 2 NSFW finetunes).** `amateur photo` as the opening medium clause plus `harsh direct flash`, `natural skin texture with visible pores`, and `film grain` is the workhorse register: it holds identity, produces warm candid color, and cooperates with explicit content. The register clause goes FIRST: a register buried at the prompt's end is ignored and the polished editorial look returns. Skin realism cue that survives every scene: `film grain` plus one named imperfection family (pores, sweat sheen, flush); stacked realism adjectives still do nothing.
 
+**Tight face crops revert to the beauty prior.** A face rendered as a close-up, or re-rendered as a zoomed detail pass, comes back with large glossy eyes, airbrushed skin and symmetrical features even when the body around it reads as photographed. The anchors that pull it back: `natural facial features, small dark eyes with hooded lids, uneven skin with visible pores and fine vellus hair, slight under-eye shadows`, plus a candid register such as `taken on a phone camera`. Keep the anchors in the sentence about the face; a whole-frame clause does not reach a zoomed crop.
+
 ## Skin tone and light temperature
 
 Light decides what colour skin comes back. `harsh direct flash` is the strongest amateur-realism cue, and it also pushes warm red into skin and into warm-toned anatomy. On one fixed seed with identical wording, the same subject came back flushed and pink under flash, and matched her thigh tone under `soft overcast daylight, neutral white balance`. When a brief asks for pale, even, or "same tone everywhere" skin, swap the light before rewriting the colour words.
@@ -115,10 +117,11 @@ Workflow for heroes: draft on Turbo to nail composition fast, iterate one field 
 | Materials look fake | surfaces unnamed | state each material (`wet stone`, `brushed steel`, `linen weave`) |
 | Skin flushed, pink, or a shade off between body parts | flash, an unanchored tone, or an over-strength LoRA | the three levers in "Skin tone and light temperature" above |
 | One element of a three-element scene missing | attention dilution at 8-step turbo | keep one act per zone; split three-element scenes into a series at 8 steps / CFG 1.0 |
+| A close-up or zoomed face comes back glossy and big-eyed | the beauty prior wins on tight crops | `natural facial features, small dark eyes with hooded lids, uneven skin with visible pores, phone camera` |
 | Two adjacent objects merge into one | simultaneous adjacent items in the same zone | separate the zones spatially, or give each object its own sentence and a color contrast |
 | Second character renders as a stranger | cameo described by name only | full description (hair, eyes, build, clothes) in every prompt; composition order (`in the foreground`, `slightly behind her`) controls frame share |
 | Blurred background people render mangled | too many named background figures | keep two or three background people, faces soft-focus |
 
 ## Note on other Krea models
 
-Settings here assume **Krea 2 Turbo in ComfyUI** (8 steps, CFG 1.0, shift 1.15). Do not paste in settings from FLUX.1 Krea [dev] (guidance 4.5, ~28 steps) or Krea 1 (hosted); they are different models and the numbers do not transfer. The prompting philosophy (natural language, concrete photography, anti-plastic) is shared across the family; the numeric settings differ per model.
+Settings here assume **Krea 2 Turbo in ComfyUI** (8 steps, CFG 1.0). Shift `1.15` keeps more grain and skin defect, shift `4.0` smooths skin and slims the figure; the scheduler matters little on photographs. Do not paste in settings from FLUX.1 Krea [dev] (guidance 4.5, ~28 steps) or Krea 1 (hosted); they are different models and the numbers do not transfer. The prompting philosophy (natural language, concrete photography, anti-plastic) is shared across the family; the numeric settings differ per model.

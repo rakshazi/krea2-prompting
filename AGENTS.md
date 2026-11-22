@@ -18,6 +18,7 @@ Agent Skills repo: Markdown that an image-prompting agent reads, plus one Python
 ## Boundaries
 
 - Always: `python3 evals/lint.py` exits 0 before handoff.
+- Never: leak env-specific details (checkpoint names, LoRAs, ComfyUI nuances, etc.).
 
 ## Pointers
 

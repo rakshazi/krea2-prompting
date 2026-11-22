@@ -10,7 +10,7 @@ compatibility: >-
   Text-only: no scripts, network, GPU, or ComfyUI endpoint required. The agent needs file-read access to load
   references/ on demand. Hosted clients with content filters may block references/adult.md, which is 18+.
 metadata:
-  version: "1.4.0"
+  version: "1.5.0"
   author: rakshazi
   source: https://github.com/rakshazi/krea2-prompting
   tested-on: Krea 2 Turbo, qwen3vl_4b encoder, qwen_image_vae, 8 steps, CFG 1.0, reference images on ComfyUI 0.45.4
@@ -37,8 +37,10 @@ Krea 2 Turbo in ComfyUI. Recommend these as defaults.
 |---|---|---|
 | Steps | `8` | Turbo is distilled to 8. More steps grow noisier (tested: 50 steps + CFG 2.5 shredded texture). |
 | CFG | **`1.0`** | The official CLI says `0.0`; in a ComfyUI KSampler literal `0.0` is pure unconditional output and breaks the image. Above ~1.5 it oversaturates and distorts. |
-| Shift (mu) | `1.15` | Timestep shift, set on the ModelSampling node. |
-| Sampler / scheduler | `euler` / `simple` | The official default. `beta` also works. |
+| Sampler | `euler` | Holds across every combination tested. |
+| Scheduler | `beta` for illustration, either for photography | `beta` adds the small stuff: garment folds, jacket lining, hair strands, fur. `simple` gives flatter fills and plainer shapes, and at shift 4.0 it can leave speckle in flat backgrounds. On photoreal frames the two land close, so texture decides there. |
+| Shift (mu) | `1.15` compact and grainy, `4.0` smooth and slim | A style dial, independent of the scheduler. `1.15` reads denser and bolder with compact, stockier proportions and grainier skin with more visible surface defects. `4.0` reads cleaner and smoother with taller, slimmer proportions. |
+| Recommended | `4.0` + `beta` for illustration | Cleanest linework with the most small detail. Swap to `1.15` + `beta` when the brief wants a compact, denser-ink build, and to `simple` when it wants flat poster-like fills. |
 | Resolution | Native `2048`; minimum `1024`; dims divisible by 16 | Trained at 2048. Generate native; avoid gen-at-1024-then-upscale. Panoramic ratios widen the long edge past it. |
 | Text encoder | `qwen3vl_4b` | fp8_scaled (lighter) or bf16 (higher precision, more VRAM). |
 | VAE | `qwen_image_vae` | If colours or fine texture look subtly off, check this first. |
@@ -98,6 +100,7 @@ Each row is a tested failure with its fix. The reference holds the exact wording
 | Pale, even or matching skin tone | Swap flash for soft overcast daylight at a neutral white balance, and tie the tone to a named body part. | `references/photoreal.md`, "Skin tone" |
 | A LoRA that seems to do nothing | A/B at one fixed seed up to ±3 or ±5 before writing it off. A slider reads dead at ±1.5. | `references/comfyui-setup.md`, "LoRA strength" |
 | Emphasis that words cannot give | Weights and negative weights, which need the `Krea2PromptWeight` node. | `references/comfyui-setup.md`, "Prompt weighting" |
+| An edit to a picture that already exists: enlarge a region, remove an object, change what a body part looks like | Masked inpaint, never a re-roll. Describe the whole finished frame, let the black fill set how much may move, and drop every mention of anything being removed. | `references/inpainting.md` |
 
 ## Routes
 
@@ -110,6 +113,7 @@ Read the reference that matches the picture. Each loads only when read.
 - **`references/poses.md`**: a pose that must be exact. The 11-field schema and how to adapt it. **`references/pose-library.md`** holds 30 ready-to-paste blocks.
 - **`references/styles.md`**: locking a named aesthetic. A 289-entry style index, four full paragraphs, two authoring formulas.
 - **`references/adult.md`**: adult / NSFW photography (18+). Register control, explicit vocabulary, position geometry, multi-person rules, a tested failure table, and translating a crude brief into prose.
+- **`references/inpainting.md`**: changing a picture that already exists. The edit LoRA and Ostris patch stack, the whole-picture prompt rule, removal and contradictions, what a mask cannot do, crop-render-composite for detail, framing the black fill, a failure table.
 - **Giant scale**, photoreal cinematic by default: `references/megastructure.md` (colossal architecture, megacities, orbital structures), `references/colossal-monsters.md` (kaiju, giant beasts), `references/cosmic-horror.md` (eldritch entities, dread), `references/pure-organic-monsters.md` (strictly biological giants). All four share one scale logic: concrete exaggerated dimensions, human-scale surface units, a tiny distant scale reference, and 10 to 40 percent environmental negative space.
 - **`examples/README.md`**: ten topics, each written generic and with this skill, with both renders. Open one when the user asks what the skill changes or wants a style anchor.
 
@@ -123,7 +127,7 @@ Positive Prompt
 
 Settings
 Resolution: [width x height]   Aspect ratio: [ratio]
-Krea 2 Turbo (ComfyUI): 8 steps, CFG 1.0, shift 1.15
+Krea 2 Turbo (ComfyUI): 8 steps, CFG 1.0, euler, shift 4.0 + beta
 ```
 
 Add a short negative prompt only when a specific artifact needs suppressing. Never claim a prompt you wrote was tested unless it was.

@@ -194,7 +194,8 @@ feature drifts, edit the sheet instead of stacking more identity adjectives into
 ## What is verified, and on what
 
 ComfyUI 0.45.4, a Krea 2 Turbo finetune (Lustify v10), `qwen3-vl-4b-heretic` fp8 encoder, `qwen_image_vae`, 8 steps,
-CFG 1.0, shift 1.15, 2048x1152 output, references at 1024 to 1728 on the long side.
+CFG 1.0, shift 1.15 and 4.0 both verified with `simple` and `beta`, 2048x1152 output, references at 1024 to 1728 on
+the long side.
 
 Two passes stand behind the rules above: three seeds with one and two references across different scenes, then 20
 scenes at 2048x1152 with two references on the vision route. Identity held across both. Both fp8 encoders encoded

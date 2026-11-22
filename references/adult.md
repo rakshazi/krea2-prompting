@@ -198,6 +198,11 @@ sweat, film grain.
 
 Then iterate one variable at a time.
 
+## Editing an existing render
+
+Enlarging a body part, removing a garment, or adding explicit detail to a picture that already exists is a masked edit. The whole-picture prompt rule, the silent-prompt rule for removal, the crop-render-composite route for anatomy that needs more pixels, and the reason a garment has to be masked as well as described, all live in `inpainting.md`.
+Inpainting produces worse results than a fresh render, so apply it on specific details only.
+
 ## Reference-image note
 
 If the user supplies a reference photo to match a look, follow the reverse-engineering flow in `krea2-core.md`: the reference carries identity and style, the prompt still carries the content, including the explicit register you want, or the look match will quietly sanitize the scene.
