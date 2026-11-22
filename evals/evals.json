@@ -102,6 +102,20 @@
         "The answer says the speech line is typeset after the render",
         "The settings block carries a 4:5 resolution divisible by 16, 8 steps, CFG 1.0, and shift 1.15"
       ]
+    },
+    {
+      "id": 10,
+      "prompt": "Krea 2 prompt for a blog preview, 16:9, anime editorial: our catgirl from Picture 1 runs a bench test as the lab operator and stamps one index card KEEP, while our engineer from Picture 2 feeds a rejected card into a shredder labelled SHRED.",
+      "expected_output": "A two-reference prompt that opens with the Keep-the-same clause for Picture 1 and Picture 2, gives each character a side and one action, and stages both figures clear of furniture: no bench or table between a figure and the camera, the card and stamp in her hands, the shredder on the floor beside him. KEEP and SHRED sit in double quotes, each counted once, with the frame's only lettering named. The answer says to render four seeds before rewording. Settings: a 16:9 resolution, 8 steps, CFG 1.0.",
+      "assertions": [
+        "No table, desk, counter or bench stands between a figure and the camera: the furniture is deleted or placed beside the figures",
+        "The props that sat on the bench are in a character's hands or on the floor",
+        "The prompt opens with a Keep-the-same clause that names Picture 1 and Picture 2",
+        "Each character gets an explicit side and one distinct action",
+        "KEEP and SHRED are in double quotes, each counted exactly once, and the prompt names them as the frame's only lettering",
+        "The answer tells the user to render the prompt on four seeds before rewording it",
+        "The settings block carries a 16:9 resolution divisible by 16, 8 steps and CFG 1.0"
+      ]
     }
   ]
 }

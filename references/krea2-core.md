@@ -1,6 +1,6 @@
 # Krea 2 Core Reference
 
-What a prompt should cover, text and lettering, staged props, character replacement, the identity block, composition modules, negative families, the resolution table, and turning a reference image into a prompt. Block order and the sentence frame are in SKILL.md.
+What a prompt should cover, text and lettering, staged props, figures and furniture, sorting a defect by seed sweep, character replacement, the identity block, composition modules, negative families, the resolution table, and turning a reference image into a prompt. Block order and the sentence frame are in SKILL.md.
 
 ## What to describe
 
@@ -36,6 +36,10 @@ A small label in the lower right reads "GEOMETRY".
 Short single words and brief titles render far more reliably than sentences. Specify placement, scale, font character, occlusion, and how the text integrates into the layout. Avoid vague `cool text`, many captions, or paragraph-length strings. Keep the picture or the joke readable without the lettering, because some renders will fail it: one can label came back as "SPAIM", mirrored and with extra strokes, as curved and angled surfaces do.
 
 A label with no count comes back twice. `a small brass plate screwed to the counter reads "OMP"` rendered the plate on both ends of the counter, and `a small stitched patch on her apron reads "PI"` came back twice on the same apron. Both held once the prompt said `exactly one` and named the frame's other lettering.
+
+A count holds the label and leaves its neighbours open. With both labels counted and the frame's lettering listed, "SHRED" still printed once on the lip of a blank card holder beside the shredder (1 of 18 renders), and tally strokes written for one card appeared on a second card in 2 of 8. Keep blank plates, placards and spare cards out of a frame that carries a label, or keep a seed without the copy.
+
+A prop that carries a word is drawn large enough to letter it. `the stamp head as wide as her palm` came back as wide as her head in 8 of 8 renders once its face was turned square to the camera, so plan the composition around a large lettered prop.
 
 **Speech bubbles.** A bubble is a text surface with the same limits: a few words letter cleanly, a full sentence does not. For a longer line, generate an empty bubble and set the text afterwards.
 
@@ -124,3 +128,31 @@ A prop that shares material with the character reads as anatomy. A detached hand
 - Keep the character's own anatomy counted and explicit: `her shoulders carry exactly one arm each`, `five fingers on the prop hand`.
 - Keep the palette: one cool prop in a warm cream frame pulls the eye straight to the joke.
 - The hand on the prop is the weak point. The ranked fixes are in `references/poses.md`, "Hands and held objects".
+
+## Figures and furniture
+
+A figure standing behind a table, desk, counter or bench that crosses the frame comes back fused with it. Whatever trails behind her (a tail, long hair, a coat hem) is drawn lying on the tabletop in front of her, or the top edge cuts her at the hip while her legs show on the near side.
+
+- **Delete the furniture.** Move its props into her hands or onto the floor: a card held up at chest height, a box standing on the floor at his hip. Standing her beside the furniture is untested.
+- **Wording that rendered clean:** `both characters standing side by side on a plain cream floor, cropped at the knees and fully clear of any furniture`, in a prompt that no longer named the bench anywhere.
+- **Depth wording buys nothing.** Naming the camera side and placing the bench top in front of her hips left the fault on 4 of 4 seeds.
+- **When the furniture has to stay,** sweep seeds and keep a clean one: the bench staging was clean in 3 of its first 6 renders.
+- **Check the render at full size** wherever a figure meets furniture. A thumbnail hides the fault, and three fused renders passed a first review.
+
+Receipt: a two-character illustration with a workbench across the lower third and both figures behind it. Fused in 3 of 6 renders, then in 4 of 4 with depth wording added, then clean in 8 of 8 once the bench was deleted and both props were hand-held.
+
+## Sorting a defect: prompt or seed
+
+Render one prompt on four seeds before rewording it, then count the renders that carry the defect.
+
+| The defect shows on | It belongs to | Fix |
+|---|---|---|
+| three or four seeds | the prompt | delete or restage the element that causes it |
+| one or two seeds | the seed | keep a clean seed and leave the prompt alone |
+
+What one eighteen-render illustration showed:
+
+- Six single-seed rounds with one wording change each settled nothing. Each round traded one defect for another, and a seed-level defect was blamed on that round's edit, which was then reverted. Three four-seed batches settled the picture.
+- Rewording lost both times it was tried against a defect that showed on most seeds: depth wording against fused furniture ("Figures and furniture", above), and `in the empty space between the two characters` against a wall stripe, which still crossed a head on 4 of 4 seeds.
+- Seed-level in that set: a stray accessory mark from the reference sheet (5 of 12), marks copied onto a second card (2 of 8), a label copied onto a blank holder (1 of 18).
+- A full-width background stripe lands at head height. `high on the wall`, with a halftone band `along the top edge of the frame`, moved it into the corners on 6 of 8 seeds.

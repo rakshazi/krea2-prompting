@@ -74,7 +74,10 @@ Rules that make it hold:
 - **Trim and small accessories are identity too, and they misbehave.** A jacket lining from the sheet got painted onto
   the blouse underneath it, and the sheet's hairpins turned up as a floating glyph beside another character's head.
   Say where an accent sits ("the hot-orange lining stays inside the open blazer") and check the accessory count and
-  placement in the render.
+  placement in the render. An accessory the prompt leaves out still arrives from the sheet, as a loose mark: an orange
+  hair clip came back as a streak across the fringe in 5 of 12 renders that never mentioned it, and the one render
+  that named it with its place drew a clip. Keep a seed without the mark; taking the accessory off the sheet is the
+  permanent fix and is untested.
 - **Traits leak onto character-like props.** With an animal-eared reference wired, a talking paper envelope in the same
   frame grew the same ears and a fluffy tail. Keep anthropomorphic props out of frames that carry the cast, or expect
   the species to spread.
@@ -177,6 +180,7 @@ feature drifts, edit the sheet instead of stacking more identity adjectives into
 | The character appears twice | two refs of one character, or two refs without the split | one ref per character, plus the 0.25 split; if it persists, drop a character so one reference stays wired |
 | A prop character grows the cast's ears or tail | species traits leaking from the reference | wire only the references the frame needs, and keep anthropomorphic props out of it |
 | A small accessory floats beside a head | sheet accessories detaching from the design | re-seed, and state where the accessory sits |
+| A stray coloured streak in the hair or across the brow | a sheet accessory the prompt never names | name it with its place, or keep a seed without it |
 | An outfit accent lands on the wrong garment | the sheet's trim colour read as a separate piece | say where the accent sits, e.g. the lining stays inside the open jacket |
 | Wrong hair or tail colour, flatter linework, tight unexpected crop | layout split pushed to 0.5 | keep the split at 0.25 to 0.35, and state the shot in `layout_prompt` when you use it |
 | Reference ignored | the prompt never names it | add `Picture N` for every connected image |

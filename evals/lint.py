@@ -9,7 +9,7 @@ import sys
 from collections import defaultdict
 from pathlib import Path
 
-BODY_MAX = 13000  # bytes; the body loads on every activation
+BODY_MAX = 19800  # bytes; the spec budget is 5000 tokens, about 4 bytes per token
 MIN_WORDS = 5  # a shorter literal is vocabulary, a longer one is a finding
 
 

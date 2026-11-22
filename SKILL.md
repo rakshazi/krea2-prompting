@@ -10,7 +10,7 @@ compatibility: >-
   Text-only: no scripts, network, GPU, or ComfyUI endpoint required. The agent needs file-read access to load
   references/ on demand. Hosted clients with content filters may block references/adult.md, which is 18+.
 metadata:
-  version: "1.5.0"
+  version: "1.5.1"
   author: rakshazi
   source: https://github.com/rakshazi/krea2-prompting
   tested-on: Krea 2 Turbo, qwen3vl_4b encoder, qwen_image_vae, 8 steps, CFG 1.0, reference images on ComfyUI 0.45.4
@@ -76,13 +76,13 @@ Make spatial relationships grammatical and explicit (left/right thirds, foregrou
 
 ## Every prompt
 
-- **State what IS present.** Negation is near-inert at CFG 1.0, in the negative field and in prose alike. `no people` becomes `an empty street`; `no plastic skin` becomes `skin with visible pores and fine vellus hair`. A negated noun can backfire: the encoder may reinforce the thing you tried to ban. A short negative prompt earns its place only to suppress one specific recurring artifact.
+- **State what IS present.** Negation is near-inert at CFG 1.0, in the negative field and in prose alike. `no people` becomes `an empty street`; `no plastic skin` becomes `skin with visible pores`. A negated noun can backfire: the encoder may reinforce the thing you tried to ban. A short negative prompt earns its place only to suppress one specific recurring artifact.
 - **Cut the quality stack.** `8k, masterpiece, best quality, ultra detailed` buys nothing and makes the image look generic. Scan the draft for it and spend those words on camera, lens, light and material.
 - **Rendered text goes in double quotes, five words at most, on a flat surface facing the camera:** `a neon sign reading "OPEN LATE"`. A banner, a box or a plate letters cleanly; a curved can label or a rolled scroll comes back with invented strokes or reversed letters.
 - **Count anything that must appear once.** An uncounted label or prop gets duplicated. Name the one instance, then say what the frame's other lettering is: `exactly one small brass plate on the counter's front edge reads "OMP", and the neon sign is the only other lettering in the scene`. For a person, "the only figure in the frame" is a weak hint: with a long prop list she still cloned herself, so keep the list short and re-roll.
 - **Dress a character top to bottom.** Name the lower garment and the hosiery in the same clause as the top, every time, including for a character you think is fully described. A clause that stops at the hoodie renders nothing below the waist.
 - **Emphasis goes in words.** `oxblood` beats `(red:1.4)`: on the stock encoder a weight shoves the whole conditioning and the image falls apart past ~1.2.
-- **Revise one variable at a time.** Hold the seed and change a single field per iteration. Several changes at once make the image drift and hide which one did what.
+- **Sort a defect before rewording: prompt or seed.** Render the prompt on four seeds. A defect on three or four is the prompt's, so delete the element that causes it; on one or two, keep a clean seed. Then change one field per iteration on a held seed, since several changes at once hide which one did what. Receipts: `references/krea2-core.md`, "Sorting a defect: prompt or seed".
 
 ## When the brief contains
 
@@ -93,6 +93,7 @@ Each row is a tested failure with its fix. The reference holds the exact wording
 | A line longer than five words, or a speech bubble | Generate one blank bubble and typeset the line after the render. Ask for the bubble up front, or the head fills the top of the frame. | `references/krea2-core.md`, "Text and lettering" |
 | A screen: chart, chat window, terminal or dashboard | Generate the screen area empty and paste a real screenshot over it. Rewording never fixes a whole interface. | `references/krea2-core.md`, "Text and lettering" |
 | A hand holding an object | An open palm presenting it, or a cuff, handle or stick for the fist to wrap. Name the contact. A closed fist on a bare object breaks. | `references/poses.md`, "Hands and held objects" |
+| A figure at or behind a table, desk, counter or bench | Delete the furniture and put its props in her hands or on the floor. A bench that stays in the prompt is drawn across her on half the seeds, and depth wording does nothing. | `references/krea2-core.md`, "Figures and furniture" |
 | A detached or uncanny prop, or a deliberate anatomy joke | Give it a material the character cannot share, and state a visible gap between prop and body. | `references/krea2-core.md`, "Staged props" |
 | A recurring character, "same as last time" | Attach one clean single-pose reference and open the prompt with `Keep the same <who> from Picture 1: <identity block>.` The reference sets proportions whatever the prose says. | `references/reference-images.md` |
 | Two characters from two references | One side and one distinct action each, plus the 0.25 layout split. If one keeps cloning, render two single-reference shots. | `references/reference-images.md`, "Two or more references" |
@@ -130,6 +131,6 @@ Resolution: [width x height]   Aspect ratio: [ratio]
 Krea 2 Turbo (ComfyUI): 8 steps, CFG 1.0, euler, shift 4.0 + beta
 ```
 
-Add a short negative prompt only when a specific artifact needs suppressing. Never claim a prompt you wrote was tested unless it was.
+End with one line telling the user to render four seeds before rewording anything. Add a short negative prompt only when a specific artifact needs suppressing. Never claim a prompt you wrote was tested unless it was.
 
 Editing this skill: read `AGENTS.md` in this directory first.
