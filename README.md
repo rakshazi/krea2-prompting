@@ -39,19 +39,19 @@ Everything the agent reads on demand lives in `references/`.
 | File | What it does |
 |---|---|
 | `SKILL.md` | The entrypoint. Mental model, ComfyUI defaults, prompt order, workflow, the six checks every prompt gets, and a table of tested traps that points at the right reference. Start here. |
-| `photoreal.md` | Camera, lens, film, light, texture. Skin tone and light temperature. Portraits, products, landscapes, architecture, heroes. |
-| `krea2-core.md` | Poster text, speech bubbles, screens and app UI, staged props, character replacement, character consistency, composition modules, negative families, resolution table, reference reverse-engineering. |
-| `reference-images.md` | Character and style references: two core-node wirings, `Picture N` prompts, the 0.25 layout split and its limits, reference-sheet rules, failure table. |
+| `references/photoreal.md` | Camera, lens, film, light, texture. Skin tone and light temperature. Portraits, products, landscapes, architecture, heroes. |
+| `references/krea2-core.md` | Poster text, speech bubbles, screens and app UI, staged props, character replacement, character consistency, composition modules, negative families, resolution table, reference reverse-engineering. |
+| `references/reference-images.md` | Character and style references: two core-node wirings, `Picture N` prompts, the 0.25 layout split and its limits, reference-sheet rules, failure table. |
 | `references/inpainting.md` | changing a picture that already exists. The edit LoRA and Ostris patch stack, the whole-picture prompt rule, removal and contradictions, what a mask cannot do, crop-render-composite for detail, framing the black fill, a failure table. |
-| `comfyui-setup.md` | Model files, the RAW checkpoint, `Krea2PromptWeight`, LoRA strength, the enhancer, troubleshooting. |
-| `poses.md` | The 11-field pose schema, usage, taxonomy, the field findings, and hands and held objects. |
-| `pose-library.md` | 30 ready-to-paste pose blocks. Copy, paste, stop inventing poses from scratch. |
-| `styles.md` | 289 style names, four full examples, two authoring formulas. |
-| `adult.md` | 18+. The explicit one. You know why you're here. |
-| `megastructure.md` | Colossal architecture, megacities, orbital structures. |
-| `colossal-monsters.md` | Kaiju, giant beasts, alien fauna. |
-| `cosmic-horror.md` | Eldritch entities, impossible anatomy, dread. |
-| `pure-organic-monsters.md` | Strictly biological giants. No metal, no mineral, no cheating. |
+| `references/comfyui-setup.md` | Model files, the RAW checkpoint, `Krea2PromptWeight`, LoRA strength, the enhancer, troubleshooting. |
+| `references/poses.md` | The 11-field pose schema, usage, taxonomy, the field findings, and hands and held objects. |
+| `references/pose-library.md` | 30 ready-to-paste pose blocks. Copy, paste, stop inventing poses from scratch. |
+| `references/styles.md` | 289 style names, four full examples, two authoring formulas. |
+| `references/adult.md` | 18+. The explicit (and the biggest) one. You know why you're here. |
+| `references/megastructure.md` | Colossal architecture, megacities, orbital structures. |
+| `references/colossal-monsters.md` | Kaiju, giant beasts, alien fauna. |
+| `references/cosmic-horror.md` | Eldritch entities, impossible anatomy, dread. |
+| `references/pure-organic-monsters.md` | Strictly biological giants. No metal, no mineral, no cheating. |
 | `examples/` | Ten topics, each prompted twice (generic versus skill), with both renders side by side. |
 | `evals/` | Maintenance harness. `trigger-queries.json` says what should activate the skill; `evals.json` says what a correct answer contains; `lint.py` fails when the body outgrows its budget or the same quoted phrase turns up in two files. |
 
