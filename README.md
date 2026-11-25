@@ -32,6 +32,10 @@ Same checkpoint, same seed, one variable per prompt. If a clause changed the ima
 
 Ten topics, two passes by DeepSeek v4.1 Flash: one with only this README and the list of files as context, one with the entire skill loaded. [The examples gallery](./examples/README.md) has both renders side by side and both prompts for every topic. It is the fastest way to see what the skill actually changes.
 
+### Real world use
+
+The skill is actively used on [rakshazi.me/blog](https://rakshazi.me/blog/), so if you want to see examples of consistent characters with various actions, objects, outfits, etc., check the images in the blog posts.
+
 ## What's inside
 
 Everything the agent reads on demand lives in `references/`.

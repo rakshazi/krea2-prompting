@@ -126,6 +126,34 @@ Treat 0.25 to 0.35 as the working range. When you override `layout_prompt`, stat
 because that pass decides the framing before any reference is seen. Keep lettering out of the plan there too: the same
 override flattened a large headline into invented letters.
 
+### Slices: one element per render
+
+A scene with a set, a reference character and props is several jobs, and one render solves them worse than the
+pieces do. In the rakshazi.me blog pipeline, full-scene reference renders took 10+ rerolls per publishable frame
+and still drifted. Rendering the set empty, each character alone and each prop alone, then compositing, landed the
+bar plate and the gemma plate in one pass each.
+
+1. **Background plate.** The location alone, at the final aspect, with the floor line, the light and the palette.
+   Ask for an empty set in the positive: `an empty bar before opening, all eight stools empty, the counter is
+   completely bare`. A background plate that includes the cast makes the cutouts compete with it.
+2. **Character slice.** One character, one reference, full body on plain paper, no floor line and no cast shadow.
+   Open with the identity clause from Picture 1. A second reference of the same character clones her.
+3. **Prop slice.** One object on plain paper, one label at most. A prop that insists on a baked shadow gets cut
+   with the shadow band, or the composite skips its own shadow.
+4. **Cutout.** Matte a character with an anime segmenter (`isnet-anime` via rembg): it sees the paper between the
+   legs and under an arm as background, so there is no island to chase and no light rim. Defringe the edge against
+   the paper and resize premultiplied, or the cream behind the legs bleeds into the character in the composite. A
+   border flood fill is the fallback for a flat prop.
+5. **Composite.** Place the cut slices on the plate, and add a contact shadow at the baseline. The
+   background owns the perspective; the slice owns the figure. Keep the paste zone clear of hands and props.
+
+This is the same recipe as "Three or more figures" below, applied at any count. A set with one character benefits
+too, because the model no longer has to solve the set, the cast and the props at once. Use the one-shot scene when
+the picture is a single figure on plain paper or a deliberate test.
+
+The slices share the style paragraph. A background that renders far more detailed than the cast makes the cutout
+read as pasted, so keep the detail level down or grade the cutout to the plate.
+
 ### Three or more figures
 
 The split does not scale to a crowd. Seven characters seated in a row, prompt-only with no references wired, came back as an even line of identical backs: the same shoulder width, the same spacing, the outer two sliced by the frame edge, and one of them rendered without clothes. Nothing in that prompt was ambiguous. The model has no notion of a crowd, so it tiles the one figure it knows.
@@ -177,7 +205,7 @@ feature drifts, edit the sheet instead of stacking more identity adjectives into
 | A blocky grid of patches in the frame | latent route running without `krea2_style_reference` | load the LoRA at 1.0, or drop the `vae` input for Route A |
 | Whole frame turns grainy or halftone | latent route copying a textured reference | use a clean reference or lower the LoRA strength |
 | Muddy colours and soft texture on the latent route | Wan-family VAE | connect `qwen_image_vae` |
-| The character appears twice | two refs of one character, or two refs without the split | one ref per character, plus the 0.25 split; if it persists, drop a character so one reference stays wired |
+| The character appears twice | two refs of one character, two refs without the split, or a prompt that places her twice | one ref per character, plus the 0.25 split, and state her position once. A prompt that put her `in the center` in its opening and again `left of the door` thirty words later doubled her on 2 of 20 renders; with one placement, 18 of 20 came back with exactly one. If it persists, drop a character so one reference stays wired |
 | A prop character grows the cast's ears or tail | species traits leaking from the reference | wire only the references the frame needs, and keep anthropomorphic props out of it |
 | A small accessory floats beside a head | sheet accessories detaching from the design | re-seed, and state where the accessory sits |
 | A stray coloured streak in the hair or across the brow | a sheet accessory the prompt never names | name it with its place, or keep a seed without it |

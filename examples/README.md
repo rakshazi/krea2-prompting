@@ -2,6 +2,8 @@
 
 Ten topics, prompted twice: first with only a file list as context, then with the entire skill. Each section below shows the two renders side by side, generic prompt on the left, skill prompt on the right; both prompts are published in the linked page.
 
+> **Note:** the skill is actively used on [rakshazi.me/blog](https://rakshazi.me/blog/), so if you want to see examples of consistent characters with various actions, objects, outfits, etc., check the images in the blog posts.
+
 ## How these were generated
 
 Both prompt sets come from DeepSeek v4.1 Flash, generated in two passes:

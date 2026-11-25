@@ -128,6 +128,8 @@ A prop that shares material with the character reads as anatomy. A detached hand
 - Keep the character's own anatomy counted and explicit: `her shoulders carry exactly one arm each`, `five fingers on the prop hand`.
 - Keep the palette: one cool prop in a warm cream frame pulls the eye straight to the joke.
 - The hand on the prop is the weak point. The ranked fixes are in `references/poses.md`, "Hands and held objects".
+- **One object, one clause.** `a plain charcoal hand-cart on two small wheels, loaded with a tall leaning stack of cream paper scrolls` renders as one cart. Giving the handle its own clause (`with a tall upright handle at its back`) split the same cart into a thin trolley plus a separate box of scrolls on 3 of 5 seeds, and the single clause kept the cart whole in the 8 later renders reviewed. A prop with a body, a handle and a load is three chances to draw a second object: name the whole thing in one clause and let the render place its parts.
+- **Paper props change shape.** `cream paper scrolls` renders either as tubes standing in a cart or as a stack of loose sheets, and neither reads as a rolled document. The loose end is the fragile part: spilled toward the camera it reads as a tongue hanging out of the cart, while the same paper hanging down a vertical side reads as a sheet. Keep one stack and at most one loose end, hung down a side rather than forward.
 
 ## Figures and furniture
 
@@ -141,6 +143,8 @@ A figure standing behind a table, desk, counter or bench that crosses the frame 
 
 Receipt: a two-character illustration with a workbench across the lower third and both figures behind it. Fused in 3 of 6 renders, then in 4 of 4 with depth wording added, then clean in 8 of 8 once the bench was deleted and both props were hand-held.
 
+**A doorway needs its door, its frame and its step.** `one tall rectangular doorway with one closed cream door in it, the door's face square to the camera and a small charcoal round knob at its right edge, a thin cream step across the threshold at its foot` reads as a building entrance. Named as a bare opening with a plate above it, the same gate came back as a plain wall with a sign on it, which reads as nothing at all. A window needs its inside too: a frame alone came back as an empty rectangle on 3 of the first 5 renders, and `a flat pale grey pane with a single vertical mullion` filled it in the 8 later renders. An awning described in prose rendered as a box bolted over the door on 2 of 2, so the step and the door frame carry the entrance on their own.
+
 ## Sorting a defect: prompt or seed
 
 Render one prompt on four seeds before rewording it, then count the renders that carry the defect.
@@ -149,6 +153,7 @@ Render one prompt on four seeds before rewording it, then count the renders that
 |---|---|---|
 | three or four seeds | the prompt | delete or restage the element that causes it |
 | one or two seeds | the seed | keep a clean seed and leave the prompt alone |
+| every seed, as a different wrong object each time | the model has no concept of that object | name a familiar object with the same job, or add the real tool in post: "When the object itself is missing", below |
 
 What one eighteen-render illustration showed:
 
@@ -156,3 +161,14 @@ What one eighteen-render illustration showed:
 - Rewording lost both times it was tried against a defect that showed on most seeds: depth wording against fused furniture ("Figures and furniture", above), and `in the empty space between the two characters` against a wall stripe, which still crossed a head on 4 of 4 seeds.
 - Seed-level in that set: a stray accessory mark from the reference sheet (5 of 12), marks copied onto a second card (2 of 8), a label copied onto a blank holder (1 of 18).
 - A full-width background stripe lands at head height. `high on the wall`, with a halftone band `along the top edge of the frame`, moved it into the corners on 6 of 8 seeds.
+
+## When the object itself is missing
+
+A defect that comes back as a different wrong object on every seed is not a wording problem. The model is reaching for the nearest thing it has, and the thing the brief asks for is not in there, so a reworded tool moves the failure from a hammer head to a spear head to a walking cane without ever settling.
+
+- **The tell:** one slot in an otherwise clean frame, an invented object in it every render, while the count, the grip and the placement clauses are all obeyed. Two or three different descriptions of the same object change which wrong shape appears and never produce the right one.
+- **The fix:** name a familiar object that does the same job in the same place, and let the face, the pose and the setting carry the specific meaning. A hypodermic syringe, a chef's knife and a wooden spoon all exist for the model; a named specialty instrument usually does not.
+- **When nothing familiar fits,** drop the prop and add the real object in post, exactly as a screen or a bubble is filled by hand. A prop the model cannot draw is a compositing job, and the prompt is the wrong tool for it.
+- **Do not stack synonyms for the missing concept.** Three descriptions of the same unfamiliar tool in one prompt (`a lobotomy pick, an orbitoclast, a transorbital probe`) give it three anchors to blend, and the render mixes parts of all three.
+
+Receipt: a lobotomy pick, wanted as a long slim steel rod with a small T-handle, on a comical doctor. Two wordings over sixteen renders produced a hammer-headed shaft, a harpoon with a bracket grip, a walking cane in two renders, a spade-tipped rod, a rod floating clear of the fist, a detached crossbar, a giant T-cane and a spear across the chest, and no render repeated a wrong shape. Re-prompted at the same seed, pose and hand with `one oversized hypodermic syringe`, the object read correctly on the first render.
